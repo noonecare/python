@@ -17,11 +17,26 @@ class MyComplex:
 # 其实严守 python 编码的规范， 并且记住以 test（函数用小写）/Test(类用大写) nosetests 就会识别为 test。
 class TestMyComplex:
 
-    data = MyComplex(1, 2)
+    data1 = MyComplex(1, 2)
+    data2 = MyComplex(1, 2)
+
+    def setup(self):
+        print("setup 将先于任何 test method 执行")
+
+    def teardown(self):
+        print("teardown 将会在所有 test method 都执行完了之后再执行")
 
     def test_complex_add(self):
         adder = MyComplex(2, 3)
-        self.data.complex_add(adder)
-        assert self.data.real == 3
-        assert self.data.image == 5
+        self.data1.complex_add(adder)
+        assert self.data1.real == 3
+        assert self.data1.image == 5
         print("test complex add is correct.")
+
+    def test_complex_minus(self):
+        m = MyComplex(1, 2)
+        self.data2.complex_minus(m)
+        # 我是为了制造出一个错误
+        assert self.data2.real == 100
+        assert self.data2.image == 100
+        print("test complex minus is correct.")
