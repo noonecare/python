@@ -16,14 +16,14 @@ def add(x, y):
 # 定义时，执行了 add = Profile(add)
 
 
+class Spam:
+    @Profiled
+    def bar(self, x):
+        print(x)
+
+
 if __name__ == '__main__':
     print(add(2, 3))
     print(add.ncalls)
-    print(add(2, 3))
-    print(add.ncalls)
-    print(add(2, 3))
-    print(add.ncalls)
-    print(add(2, 3))
-    print(add.ncalls)
-    print(add(2, 3))
-    print(add.ncalls)
+    spam = Spam()
+    spam.bar(3)
