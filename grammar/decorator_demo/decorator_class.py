@@ -6,7 +6,7 @@ class Profiled:
 
     def __call__(self, *args, **kwargs):
         self.ncalls += 1
-        return self.func(*args, **kwargs)
+        return self.func(self, *args, **kwargs)
 
 
 @Profiled
