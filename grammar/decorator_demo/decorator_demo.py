@@ -1,7 +1,7 @@
 from functools import wraps
 
 
-def decorat(func):
+def decorate(func):
     """
     这是 decorat 函数的 docstring
     :param func: A function 
@@ -19,7 +19,7 @@ def decorat(func):
     return h
 
 
-@decorat
+@decorate
 def add_one(a):
     return a + 1
 #  上面的decorator 其实是执行了 add_one = decorate(add_one)
@@ -41,7 +41,7 @@ def minus_one(a):
     return a - 1
 
 
-@decorat
+@decorate
 def original_function(a):
     """
     这是 original_function 的 docstring
