@@ -13,20 +13,11 @@ class MainHandler(tornado.web.RequestHandler):
     @tornado.gen.coroutine
     def get(self):
         print("receive request")
-        yield self.time_cost_operate()
-        print("request, done")
-        self.finish()
-
-    @tornado.gen.coroutine
-    def time_cost_operate(self):
-        """
-        tornado.gen.Task 会在当前的Ioloop iteration 中执行 tornado.gen.Task 参数中的函数，yield tornado.gen.Task 后面的语
-        句和 tornado.gen.Task 参数中函数，是异步执行的
-        add_timeout 会立即执行 epoll 操作
-        """
-        yield tornado.gen.Task(tornado.ioloop.IOLoop.instance().add_timeout, time.time() + 100)
-        sleep(10)
+        yield tornado.gen.Task(tornado.ioloop.IOLoop.instance().add_timeout, time.time() + 10)
+        # 下面的代码应该写耗时的操作，这里以 sleep 操作做例子
+        sleep(1)
         print("time cost operate")
+        self.finish()
 
 
 if __name__ == '__main__':
