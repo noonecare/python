@@ -13,17 +13,22 @@ print(a.__name__)
 
 
 def authenticate(x):
-    return type(x.__name__, (), {"author": "wangmeng"})
+    item = {'author': 'wangmeng'}
+    for attr in dir(x):
+        item[attr] = getattr(x, attr)
+
+    return type(x.__name__, (), item)
+    # return type(x.__name__, (), {})
 
 
 @authenticate
 class Demo:
-    pass
+    def greet(self):
+        print("Hello")
 
 
 print(Demo.author)
-
-
+Demo().greet()
 """
 对于类，常用的是 metaclass 这个在另一个文件中介绍
 """
