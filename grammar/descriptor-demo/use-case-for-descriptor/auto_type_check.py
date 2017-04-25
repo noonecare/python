@@ -1,7 +1,4 @@
 # coding: utf-8
-from decimal import Decimal, ROUND_UP
-from tkinter import Widget
-
 """
 python 有个弊端是， 变量不能绑定类型，在 debug 的时候，编译器能给我们的帮助有限。
 对于 class attribute 用 descriptor 可以把变量绑定到特定类型的。
@@ -17,16 +14,12 @@ class IntDescriptor(object):
         self.value = None
 
     def __get__(self, instance, owner):
-        try:
-            return int(self.value)
-        except:
-            raise TypeError("Cannot be casted to int")
+        return int(self.value)
 
     def __set__(self, instance, value):
-        try:
-            self.value = int(value)
-        except:
-            raise TypeError("Cannot be casted to int")
+        self.value = int(value)
+        if self.value < 0 or self.value > 200:
+            raise ValueError("一个人不可能活这么长")
 
 
 class StringDescriptor(object):
@@ -34,16 +27,10 @@ class StringDescriptor(object):
         self.value = None
 
     def __get__(self, instance, owner):
-        try:
-            return str(self.value)
-        except:
-            raise TypeError("Cannot be casted to int")
+        return str(self.value)
 
     def __set__(self, instance, value):
-        try:
-            self.value = str(value)
-        except:
-            raise TypeError("Cannot be casted to int")
+        self.value = str(value)
 
 
 class TypedAttribute:
@@ -63,5 +50,10 @@ if __name__ == '__main__':
 
     try:
         b = TypedAttribute(3, "不能转成int")
-    except TypeError:
-        print("果然会发生 TypeError")
+    except ValueError:
+        print("果然发生了异常")
+
+    try:
+        c = TypedAttribute("zhangsanfeng", 300)
+    except ValueError as e:
+        print(str(e))
