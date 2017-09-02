@@ -19,20 +19,22 @@ class YunLaiGeCrawler:
         submit.click()
         book_url = browser.current_url
         if book_url != "http://www.yunlaige.com/modules/article/search.php":
-            return book_url
+            book_menu_url = browser.find_element_by_css_selector("a.readnow").get_attribute("href")
+            return book_menu_url
 
-    def get_book_menu(self, book_url):
-        """
-        由书的连接得到所有章节，以及所有章节的链接
-        :return: 所有章节的链接
-        """
-        pass
+    @staticmethod
+    def get_chapter_urls(book_menu_url):
+        soup = BeautifulSoup(requests.get(book_menu_url).text, "lxml")
+        for chapter in soup.select("td > a"):
+            yield book_menu_url[:-len("index.html")] + chapter.get("href")
 
-    def download(self, chapter_url):
-        """
-        有章节的 url 下载章节的内容
-        :param chapter_url: 章节对应的url
-        """
+    @staticmethod
+    def download(chapter_url):
+        soup = BeautifulSoup(requests.get(chapter_url).content.decode("GB18030"), "lxml")
+        title = soup.select_one("title").text
+        content = soup.select_one("div#content").text
+        with open(title, "wt", encoding="utf-8") as f:
+            f.write(content)
 
     def run(self):
         """
