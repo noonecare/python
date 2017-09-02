@@ -1,6 +1,9 @@
 # coding: utf-8
+import argparse
+from threading import Thread
 from urllib.parse import quote
-
+from queue import Queue
+import logging
 import requests
 import selenium
 from bs4 import BeautifulSoup
@@ -9,7 +12,11 @@ from selenium import webdriver
 chrome_driver_path = r"C:\Users\T440P\Downloads\chromedriver.exe"
 
 
-class YunLaiGeCrawler:
+class YunLaiGeCrawler(Thread):
+    def __init__(self, queue):
+        super(YunLaiGeCrawler, self).__init__()
+        self.queue = queue
+
     def get_book_url(book_name):
         browser = webdriver.Chrome(executable_path=chrome_driver_path)
         browser.get("http://www.yunlaige.com/")
@@ -41,4 +48,39 @@ class YunLaiGeCrawler:
         主函数
         :return: 
         """
-        pass
+        while True:
+            # 得到章节的 url
+            chapter_url = self.queue.get()
+            try:
+                self.download(chapter_url)
+            except Exception as e:
+                # 如果出错，记录日志
+                logging.error(str(e))
+            finally:
+                self.queue.task_done()
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("book_name", type=str, help="请输入你想要爬取的小说名称")
+    parser.add_argument("thread_num", type=int, help="请输入您希望的线程数")
+    args = parser.parse_args()
+    book_url = YunLaiGeCrawler.get_book_url(args.book_name)
+
+    if book_url is None:
+        print("云来阁网站没有您要找的小说： {book_name}".format(book_name=args.book_name))
+    else:
+
+        queue = Queue()
+
+        # 把要爬取章节的 url 放到 queue 中
+        for chapter_url in YunLaiGeCrawler.get_chapter_urls(book_url):
+            queue.put(chapter_url)
+
+        for i in range(args.thread_num):
+            t = YunLaiGeCrawler(queue)
+            t.daemon = True
+            t.start()
+
+        queue.join()
+        print("{book_name} 已经成功爬取".format(book_name=args.book_name))
