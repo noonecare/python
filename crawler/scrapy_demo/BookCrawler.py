@@ -1,15 +1,12 @@
 # coding: utf-8
 import argparse
-from threading import Thread
-from urllib.parse import quote
-from queue import Queue
 import logging
+from queue import Queue
+from threading import Thread
+
 import requests
-import selenium
 from bs4 import BeautifulSoup
 from selenium import webdriver
-
-chrome_driver_path = r"C:\Users\T440P\Downloads\chromedriver.exe"
 
 
 class YunLaiGeCrawler(Thread):
@@ -17,7 +14,7 @@ class YunLaiGeCrawler(Thread):
         super(YunLaiGeCrawler, self).__init__()
         self.queue = queue
 
-    def get_book_url(book_name):
+    def get_book_url(book_name, chrome_driver_path):
         browser = webdriver.Chrome(executable_path=chrome_driver_path)
         browser.get("http://www.yunlaige.com/")
         search = browser.find_element_by_id("searchkey")
@@ -64,8 +61,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("book_name", type=str, help="请输入你想要爬取的小说名称")
     parser.add_argument("thread_num", type=int, help="请输入您希望的线程数")
+    parser.add_argument("chrome_driver_path", type=str, help="请输入 chromedriver.exe 的路径")
     args = parser.parse_args()
-    book_url = YunLaiGeCrawler.get_book_url(args.book_name)
+    book_url = YunLaiGeCrawler.get_book_url(args.book_name, args.chrome_driver_path)
 
     if book_url is None:
         print("云来阁网站没有您要找的小说： {book_name}".format(book_name=args.book_name))
