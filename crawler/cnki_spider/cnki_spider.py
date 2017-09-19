@@ -1,7 +1,10 @@
 # coding: utf-8
+import argparse
+import random
 from queue import Queue
 from threading import Thread
 
+import re
 import requests
 from bs4 import BeautifulSoup
 
@@ -38,8 +41,9 @@ class CnkiCatalogSpider(Thread):
 
     def __init__(self, queue, result_queue):
         """
-        :param queue: 从 queue 中取出目录页面的 url
-        :param result_queue: 把解析出来的文献的 url 放入到 result_queue 中
+        :param journal: str 要查看那个期刊，比如“新文学史料”
+        :param queue: Queue 从 queue 中取出目录页面的 url
+        :param result_queue: Queue 把解析出来的文献的 url 放入到 result_queue 中
         """
         super(CnkiCatalogSpider, self).__init__()
         self.queue = queue
@@ -56,15 +60,6 @@ class CnkiCatalogSpider(Thread):
         for message in soup.select("a[onclick]"):
             yield message.get("onclick").split(",")[1].strip("'")
 
-    @staticmethod
-    def getCatalogUrl():
-        # 这里以 新文学史料 为例
-        template_url = "http://navi.cnki.net/knavi/JournalDetail/GetArticleList?year={year}&issue={issue_num}&pykm=XWXS&pageIdx=0"
-
-        for year in range(1978, 2017):
-            for issue_num in ["01", "02", "03", "04"]:
-                yield template_url.format(year=year, issue_num=issue_num)
-
     def run(self):
         while True:
             catalog_url = self.queue.get()
@@ -73,11 +68,57 @@ class CnkiCatalogSpider(Thread):
             self.queue.task_done()
 
 
+class JournalUrlSpider(Thread):
+    def __init__(self, journal):
+        self.journal = journal
+
+    @staticmethod
+    def getJournalUrl(journal):
+        search_url = r"http://navi.cnki.net/knavi/Common/Search/All"
+        data = """{"StateID":"","Platfrom":"","QueryTime":"","Account":"knavi","ClientToken":"","Language":"","CNode":{"PCode":"SCDB","SMode":"","OperateT":""},"QNode":{"SelectT":"","Select_Fields":"","S_DBCodes":"","QGroup":[{"Key":"subject","Logic":1,"Items":[],"ChildItems":[{"Key":"txt","Logic":1,"Items":[{"Key":"txt_1","Title":"","Logic":1,"Name":"LY","Operate":"%","Value":"'新文学史料'","ExtendType":0,"ExtendValue":"","Value2":""}],"ChildItems":[]}]}],"OrderBy":"","GroupBy":"","Additon":""}}"""
+        query_data = re.sub('"Value":"([^"]+)"', '"Value":"\'{journal}\'"'.format(journal=journal), data)
+
+        response = requests.post(search_url,
+                                 data={"SearchStateJson": query_data, "displaymode": 1, "pageindex": 1, "pagecount": 10,
+                                       "index": 1, "random": random.uniform(0, 1)})
+        soup = BeautifulSoup(response.text, "lxml")
+        return "http://navi.cnki.net" + soup.select_one("dl.result h1 > a").get("href").strip()
+
+    @staticmethod
+    def _getStartYear(journal_url):
+        response = requests.get(journal_url)
+        soup = BeautifulSoup(response.text, 'lxml')
+        for candidate in soup.select("p.hostUnit"):
+            if "创刊时间" in candidate.text:
+                return candidate.select_one("span").text
+
+    @staticmethod
+    def _getCatalogUrl(start_year, journal_url):
+        pykm = re.search("baseid=([^&]+)", journal_url).group(1)
+        template_url = "http://navi.cnki.net/knavi/JournalDetail/GetArticleList?year={year}&issue={issue_num}&pykm={pykm}&pageIdx=0"
+
+        for year in range(int(start_year), 2017):
+            for issue_num in ["01", "02", "03", "04"]:
+                yield template_url.format(year=year, issue_num=issue_num, pykm=pykm)
+
+    def getCatalogUrl(self):
+        journal_url = self.getJournalUrl(self.journal)
+        start_year = self._getStartYear(journal_url)
+        for url in self._getCatalogUrl(start_year, journal_url):
+            yield url
+
+
 if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("journal_name", type=str, help="期刊的名字，注意是精确的名字")
+    args = parser.parse_args()
+
     queue_1 = Queue()
     queue_2 = Queue()
 
-    for catalog_url in CnkiCatalogSpider.getCatalogUrl():
+    journalUrlSpider = JournalUrlSpider(args.journal_name)
+    for catalog_url in journalUrlSpider.getCatalogUrl():
         queue_1.put(catalog_url)
 
     catalog_spider_num = 1
