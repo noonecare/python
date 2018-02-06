@@ -56,5 +56,15 @@ create_table_sql = '''create table if not exists {table_name}
 把依赖写到 requirements.txt 中。使用 Docker 部署。
 
 
+### 算法分析与设计
+
+为了实现算法我一直坚持用 Java, 因为我认为底层的语言，才能暴露算法所有细节。但是 Java 不是我惯用的语言。特别是，面试的时候一紧张，几乎写不出来。
+
+其实用 python 实现算法，是没有问题的。用任何语言实现算法都是没有问题。只是不同语言中常用的类型属于不同的数据结构。
+
+
+python 中的 list 是 链表， set 和 dict 是 hash table(在 list 中查找一个元素的时间复杂度是 O(n), 在 set 和 dict 中查找一个元素（key）的时间复杂度是 O(1 + \alpha))。python 中的数组可以直接用 numpy 中的 array（跟 C 语言一样）。
+
+
 
 最近喜欢读源码，感觉是个好事儿。
