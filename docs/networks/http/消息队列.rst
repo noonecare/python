@@ -1,0 +1,75 @@
+===========
+消息队列
+===========
+
+:Author: 王蒙
+:Tags: 网络编程
+
+:abstract:
+
+    消息队列能够方便地组织多进程的通信方式。
+
+.. contents::
+
+Audience
+========
+
+网络编程，分布式
+
+Prerequisites
+=============
+
+python
+
+
+Problem
+=======
+
+- 常见的消息队列
+- 如何使用消息队列
+
+Solution
+========
+
+- 常见的消息队列
+
+    RabbitMQ, ZeroMQ, Kafka 都是常用的消息队列。
+
+    消息队列确保：
+
+        - 消息可靠的传输
+        - 消息是完整的
+
+
+    常见消息队列的特点：
+
+        - ZeroMQ
+
+            - 没有中心化的 message broker.
+
+        - RabbitMQ
+
+            - 需要中心化的 message broker.
+
+
+- 如何使用消息队列
+
+
+    使用消息队列最重要的就是要确定，消息网的拓扑结构。
+
+    常见的结构有：
+
+        - pipeline
+        - fanout
+        - request-reply
+        - route
+
+
+
+
+
+
+Reference
+=========
+
+- Foundations of Python Networks Programming
