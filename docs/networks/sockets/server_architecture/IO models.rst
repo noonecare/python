@@ -55,7 +55,7 @@ Solution
     asynchronous 和 non-blocking:
 
         - non-blocking 强调的是函数会立即返回。
-        - asynchronous 敲掉的是函数完成时，会通知当前进程（比如通过信号）。
+        - asynchronous 强调的是函数完成时，会通知当前进程（比如通过信号）。
 
 
     .. code-block::
