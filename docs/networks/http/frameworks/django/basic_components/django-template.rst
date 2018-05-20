@@ -28,6 +28,7 @@ Problem
 - 模板继承
 - tags
 - filters
+- context processor
 - Pycharm 对于 Django 模板的支持
 
 Solution
@@ -89,6 +90,38 @@ Solution
             @register.filter(name='markdown')
             def markdown_format(text):
                 return mark_safe(markdown.markdown(text))
+
+- context processor 从 request 中构造 dict, 这个 dict 可以用在模板中。
+
+    .. code-block::
+
+        from .cart import Cart
+
+        def cart(request):
+            return {'cart': Cart(request)}
+
+    context processor 要生效，需要写到 settings.py 中。
+
+    .. code-block::
+
+        TEMPLATES = [
+                        {
+                        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                        'DIRS': [],
+                        'APP_DIRS': True,
+                        'OPTIONS': {
+                            'context_processors': [
+                            'django.template.context_processors.debug',
+                            'django.template.context_processors.request',
+                            'django.contrib.auth.context_processors.auth',
+                            'django.contrib.messages.context_processors.messages',
+                            'cart.context_processors.cart',
+                        ],
+                        },
+                        },
+                    ]
+
+
 
 - Pycharm
 
