@@ -1,0 +1,101 @@
+===============
+Django Template
+===============
+
+:Author: 王蒙
+:Tags: Django, Template, Web Framework, Python
+
+:abstract:
+
+    介绍 Django 的模板。
+
+.. contents::
+
+Audience
+========
+
+Python 开发，网站开发
+
+Prerequisites
+=============
+
+Python
+
+
+Problem
+=======
+
+- 模板继承
+- tags
+- filters
+- Pycharm 对于 Django 模板的支持
+
+Solution
+========
+
+- 模板继承
+
+    模板继承，就是通过 {% block {some_name} %}..{% endblock %} 定义 base template。再定义模板时，使用 {% extends "{base template path}"%} 继承 base template。继承模板只能重写 base template 中用 {% block {some_name}%}{% enbblock%} 圈出来的内容， 通过 some_name 连接要替换和被替换的内容。
+
+
+- tag: 除了模板继承，其他的 tag 都容易理解，基本只要看到 tag 的名字，就能理解。
+
+
+    - 如果需要某个特别的功能，可以自定义 tag
+
+        - simple_tag
+
+            .. code-block::
+
+                from django import template
+                register = template.Library()
+                from ..models import Post
+
+                @register.simple_tag
+                def total_posts():
+                    return Post.published.count()
+
+        - inclusion_tag
+
+            .. code-block::
+
+                @register.inclusion_tag('blog/post/latest_posts.html')
+                def show_latest_posts(count=5):
+                    latest_posts = Post.published.order_by('-publish')[:count]
+                    return {'latest_posts': latest_posts}
+
+
+
+        - assignment_tag
+
+            .. code-block::
+
+                from django.db.models import Count
+                @register.assignment_tag
+                def get_most_commented_posts(count=5):
+                    return Post.published.annotate(total_comments=Count('comments')).order_by('-total_comments')[:count]
+
+
+- filter: filter 就是在模板中对某些量做处理，比如 uppercase 等。filter 几乎看下名字就知道是什么含义。
+
+
+    - 对于特别的功能，可以自定义 filter
+
+        .. code-block::
+
+            from django.utils.safestring import mark_safe
+            import markdown
+
+            @register.filter(name='markdown')
+            def markdown_format(text):
+                return mark_safe(markdown.markdown(text))
+
+- Pycharm
+
+    实际用 Pycharm 写 template 时，会发现 Pycharm 能够自动补全 tag 和 filter。
+
+
+Reference
+=========
+
+- Django By Example
