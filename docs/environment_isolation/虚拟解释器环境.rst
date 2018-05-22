@@ -1,0 +1,100 @@
+====================
+虚拟 python 环境
+====================
+
+:Author: 王蒙
+:Tags: python 环境，开发环境
+
+:abstract:
+
+    项目比较复杂的时候，可能需要构建虚拟的 Python 环境。虚拟Python环境不仅使项目可以有独立的包环境；而且方便重现项目需要的Python环境。
+
+.. contents::
+
+Audience
+========
+
+Python 开发
+
+Prerequisites
+=============
+
+Python, shell 脚本的执行
+
+
+Problem
+=======
+
+- 什么时候需要虚拟 Python 环境
+- 如何构建虚拟 Python 环境
+- 进入/退出虚拟 Python 环境
+- 重现 Python 环境
+
+
+Solution
+=========
+
+
+- 什么时候需要虚拟 Python 环境
+
+    虚拟 Python 环境带来的最大好处是：
+
+        - 项目独立的包环境。
+
+        - 方便重现项目的 Python 环境。
+
+    包依赖比较复杂时，需要虚拟的 Python 环境。
+
+    Pycharm 使得操作虚拟 Python 环境非常简单，有 Pycharm 你可以一直用虚拟Python 环境。
+
+
+- 构建虚拟 Python 环境
+
+    **pyvenv** 和 **virtualenv** 是构建虚拟 Python 环境的工具。而且两种工具的使用几乎完全一样。文本以 **pyvenv** 为例做介绍。
+
+    .. code-block::
+
+        # 构建名为 wangmeng-python Python 环境，名称可以随便取
+        $ pyvenv wangmeng-python
+
+    构建的结果是一个和之前 Python 版本相同，但只装了包管理工具(pip, setuptools 等)，没有其他第三方包的干净的 Python 环境。
+
+
+- 进入/退出虚拟解释器环境
+
+    $ cd wangmeng-python
+    # 下一步有坑
+    $ . ./bin/activate
+    (pyvenv-python) $ which python
+    /root/wangmeng-python/virtualenv-python/bin/python
+    # 已经进入虚拟 Python 环境
+    # 退出虚拟 Python 环境
+    (pyvenv-python) $ deactivate
+    $
+
+    踩过的坑：
+
+        - 执行 activate 脚本时，一定要使用 source 或者 . 的方式执行该脚本。
+
+            切记必须以 . 或者 source 来执行 activate 脚本。sh activate 是没法让 linux shell 进入虚拟 Python 环境的。
+
+
+            因为要修改 PATH 等等环境变量，且必须在当前 shell 进程中生效，所以必须使用 source 或者 . 来执行 activate 脚本。
+
+- 重现 Python 环境
+
+    .. code-block::
+
+        # 把当前环境的包依赖写入 requirements.txt。
+        $ pip freeze > requirements.txt
+
+        # 找个干净的（除了装包工具之外，没再装任何第三方包） Python 环境（Python 解释器版本要和之前的版本一致）。
+        # 一般使用 **pyvenv** 或者 **virtualenv** 构建这样的环境。
+        $ pyvenv restore-wangmeng-python
+        $ . ./bin/activate
+        # 在干净的环境中，使用 requirements.txt 装包，就能还原之前的 wangmeng-python 解析器环境。
+        $ pip install -r requirements.txt
+
+
+Reference
+=========
