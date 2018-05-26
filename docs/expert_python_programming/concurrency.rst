@@ -1,113 +1,202 @@
-Why Concurrency
-===============
+===========
+Concurrency
+===========
 
-* 更高效率
-* 更快的响应
+:Author: 王蒙
+:Tags: 并发
 
+:abstract:
 
-multithreading & multiprocessing
---------------------------------
+    讨论并发，Python 并发。
 
-thread 最重要的是要保证访问公共资源时，不会出现竞争。为了达到这个目的，可以加锁。可以使用现成的 threadpool, 可以使用 queue, 用
-生产者消费者模型管理等等。
+.. contents::
 
-《expert python programming》 使用 token bucket algorithm 实现了 Throttle。算法可以这样理解，如果worker 执行的操作足够快，那
-么明显，token bucket algorithm 能够实现限速（限制速度大约等于指定的 rate）的目的。如果 worker 执行的操作不是足够快，可能会是速
-度小于指定的 rate，不过你可以提高并发度，来提高速度。
+Audience
+========
 
-Process 和线程的不同在于有独立的地址空间。
+Python 开发
 
-Python 提供了与 Process 相关的操作，比如 fork 等。但是这样的操作太底层一般不用。
+Prerequisites
+=============
 
-Process 提供了 `multiprocessing.Queue`, `multiprocessing.Pipe`, `multiprocessing.sharedTypes` 提供 Queue, Pipe 和共享内存。
+Problem
+=======
 
+- 多线程 & 多进程
+- 异步IO
+- 信号
 
-不过实际上这些操作都没有直接使用 pool 方便。比如
+Solution
+========
 
-multiprocessing.Pool 表示进程池
-multiprocessing.dummy 表示线程池
+多线程&多进程
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-这些 Pool 用的比较多。
+线程和进程
 
-
-Asynchronous programing
------------------------
-
-
-Asynchronous programming 是 Python 中处理异步IO（尴尬的是 Python 提供的异步IO 优先，比如一直没有特别好的 http 异步IO 包）,
-提供更短响应事件最好的机制。
-
-
-最开始 Python 出现大量的框架，包采用了 Asynchronous programming 方式。Python 吸收了这些框架的方式，在 Python3.5 推出了
-asyncio built-in package, 让 Python 原生地支持 Asynchronous programming 的方式。
-
-Python3.5 添加了 `async`, `wait` 关键字， asyncio 提供了内建的调度器，以此实现异步编程。
+- 线程和进程都是操作系统的概念。
+- 线程和进程最大的不同在于，多个线程同属于同一个进程，可以共用该进程的公共变量。不同进程有不同的地址空间，不会共享变量（现代操作系统为了实现进程间通信，可以声明允许多个进程访问的 Shared data，但是默认不同进程是不能共享变量的）。
+- 进程和线程在 CPU 切换控制权时，都需要切换上下文(switch context)，一般线程 context switch 比进程的 context switch 耗时小。
 
 
-异步编程就是自己实现调度器。系统级的线程是用操作系统的调度器调度的。操作系统的调度器是可抢占的，调度器可以在线程的任何位置
-switch control。而异步编程的调度器是不可抢占的。就是说调度器只能在 coroutine 中预先设计好的位置 switch control。
+如果要解决的问题可以完全拆分成多个完全独立的任务。那么多线程多进程编程非常简单。
+但是实际问题，通常需要多个线程进程之间访问同一些变量(competition)，或者多个进程之间有协作（cooperative）。
 
-在异步编程中，重要的点是什么时候交出 CPU 控制权。获得 CPU 是调度器给你的，一般用现成的调度器。
+为了协调(synchronize)多线程多进程，使得多线程多进程可以协作和竞争。程序设计语言提供了两种机制：
 
+    - Semaphore: 信号量。Semaphore 就是多个线程都能及时看到的变量，根据 Semaphore 的状态，确定是否能够访问资源。就是说多线程多进程实现同步是由当前的编程者来实现。Semaphore 就是常说的 Lock，就是用 Lock 包围一部分代码。只有在 Lock 满足一定条件时，被包围的代码才能执行，否则被包围的代码需要等待。
 
-* 是不是默认在读写 IO 时，会交出控制权？
+    - Monitor: 中文一般翻译为监视锁。在写抽象数据类型时，把公共访问的资源放到该数据类型内部，该数据类型对外提供接口去访问要公共访问的资源。这些接口实现（基本上也是通过 Semaphore 来实现）了同步访问公共资源的功能。由此使得该数据类型 thread Safe。
 
-    不是，只有使用异步 IO 时，执行IO 操作会交出控制权。如果使用同步IO，并不会交出控制权。
+    Semaphore 和 Monitor 其实是写多线程多进程代码的两种方式，一种方式是把同步多线程多进程的工作交给类库使用者去做，一种是交给类库作者去做。写类库时，涉及到多线程多进程，一定要注明方法是不是 thread safe 的。
 
-* 有没有一句代码，可以交出控制权？
+多线程不容易调试，易出错。所以尽量使用 Monitor( thread safe 的数据类型)，避免自己手动写多线程导致出错。
 
-    有， await statement, 注意 await 后面跟着的只能是 awaitable 的类型： coroutines 或者 Futures。
-
-
-* Python3.5 之前，如何实现异步编程？
-
-    在 Python 3.5 之前使用 generator 来写 coroutines。之前的版本把这种 generator 称为 coroutines, 但是之前版本的python 并没
-    有定义 coroutine 。知道 Python 3.5 定义了 coroutine，给出了 await 和 async statement, 给出了线程的 scheduler, 这使得不
-    必从头开始写 coroutine, 也不必引用第三方包去实现 coroutine。
+为了减轻线程调度的负担，也为了提高效率（创建销毁线程是比较耗时的操作），现代程序设计语言（比如 Python, Java）都把任务和线程池分离。定义好的任务可以用现成的线程池执行。线程池有现成的线程调度策略可选。
 
 
-* 如何把同步IO 变得像异步IO?
+Python 多线程和多进程
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    使用线程把同步操作（不过是 IO 操作）转成类似异步的操作。
+Python 多线程多进程最大的特点是 GIL 全局锁。Python 代码在执行时由于全局锁的存在，每个Python进程只能占用一个线程。这导致 Python 多线程没办法发挥多核的性能优势。Python 进程不受 GIL 影响，可以使用多核。Python C extension 可以使用多核，Python 调用的 sys call 当然也可以使用多核。所以 IO bound 使用多线程能提高性能，但是对于 CPU bound 使用多线程没有帮助。
+
+Python 多线程多进程的另一个特点，就是会以 context manager 的语法写锁，写 pool。比如：
+
+.. code-block::
+
+    with Lock():
+        ...
+
+    with Pool(POOL_SIZE) as pool:
+        results = pool.map(fetch_place, PLACES)
+
+
+其他方面，Python 的多线程多进程和其他语言非常类似。这里主要介绍下 Python 哪些包，哪些数据类型提供了多线程多进程相关的功能：
+
+
+`threading`
+
+    - Thread 表示线程
+    - Lock 代表锁
+
+`multiprocessing`
+
+    - multiprocessing.Pool 表示进程池。
+    - multiprocessing.dummy 表示线程池。
+    - `multiprocessing.Queue` 提供了用于进程的 Queue ，常用于实现生产者消费者模型。
+    - `multiprocessing.Pipe` 提供了管道，进程通过管道把数据传递给另一个进程。
+    - `multiprocessing.sharedTypes` 提供了共享内存。
+
+`queue`
+
+    - queue.Queue 线程安全的队列，常用于生产者消费者模型。queue.Queue 注意 `task_done()` 和 `join()` 方法。
+
+`concurrent`
+
+    - `concurrent.futures`: futures 代表将来会用线程或者进程执行的任务，现在该任何可能执行完了，也可能没有执行完。
+    - `concurrent.futures.ThreadPoolExecutor`: submit 方法返回 futures。
+    - `concurrent.futures.ProcessPoolExecutor`: subumit 方法返回 futures。
+
+此外 Python 的 list, dict, tuple 等基础类型是线程安全的。
+
+
+线程中执行 sleep(10) 时，该线程是否会交出 CPU 控制权?
+
+    线程调度是抢占性的，操作系统调度器可能在任何时候，抢走 CPU 控制权。
+
+    sleep(10) 是说当前线程在 10s 之后执行，注意这里不是说 10s 的 CPU 时间，而是说 10s 的墙上时间。
+
+    sleep(10) 本身不会主动交出 CPU 控制权。
+
+
+异步编程
+~~~~~~~~~~~
+
+多线程能提高处理IO bound 程序的性能，但是异步编程是更好的办法，因为线程 context switch 要花时间，异步编程不需要花这部分时间；因为异步编程不需要限制对于公共资源的访问。
+
+Python 异步编程使用 coroutine 来定义，需要自定义或者使用Python 提供的调度器。coroutine 会使用 await 语句(Python3.5 之前是通过 yield 语句)交出 CPU 控制权给调度器，调度器负责调度多个 coroutines 的执行。
+
+自定义实现的调度器是非抢占的，而多线程多进程的调度器是抢占的。就是说 coroutine 只会在预先设计好的（await 语句或者 yield 语句）地方交出 CPU 控制权，调度器没法从其他地方抢走CPU控制权。
+
+Python 3.5 之前没有 coroutine 类型，需要使用 generator 来定义一个 coroutine。Python3.5 添加了 `async`, `await` 关键字， asyncio 提供了内建的调度器，这使得异步编程变得简单。
+
+Python3.5 的 async 和 wait 语句：
+
+    - async: 定义函数时，加上 async 修饰符，定义的函数会返回 coroutine。
+    - await: await 会交出 CPU 控制权。注意 await 后面跟着的只能是 awaitable 的类型： coroutines 或者 futures。
+
+
+Python3.5 之前，如何实现异步编程？
+
+    之前使用 generator 来定义 coroutine。比如下面的例子。
+
+    .. code-block::
+
+        def f():
+            x = yield
+            print(x)
+
+        c = f()
+        next(c)
+        c.send(1)
+
+
+如何把 blocking IO 变得像 non-blocking IO ?
+
+    可以使用多线程多进程把 blocking IO 整成 non-blocking IO。
 
     Python concurrent.futures 提供了 `Future` 和 `Executor`。
 
-    `Executor` 是抽象类，提供了 `submit`, `shutdown` 和 `map` method。 特别的 `submit` 不会立即执行操作，而是返回 Future 和
-    coroutine 非常类似，可以融入异步编程中。
+    `Executor` 是抽象类，提供了 `submit`, `shutdown` 和 `map` 方法。 特别的 `submit` 不会立即执行操作，而是返回 future ，future 可以用在 await 之后，以此融入异步编程中。
 
     `Executor` 有两个常用的具体类， `ThreadPoolExecutor` 和 `ProcessPoolExecutor`。
 
-    由此，我们可以把同步的操作伪装成异步操作，融入异步编程中。
 
-    那么这种伪装，对于程序性能有提高吗？
+信号
+~~~~~~~~~
 
-    可能有也可能没有。如果使用 ThreadPoolExecutor 执行 CPU bound Operation，那么对于程序性能几乎没有提升。
-    如果使用 ThreadPoolExecutor 执行 IO bound Operation, 由于文件读写一般会调用操作系统的 sys call, sys call 不受 GIL 影响，
-    所以能够提高程序的效率。
-    如果使用 ProcessPoolExecutor 一般是能提高效率的。
+系统信号
 
-    也就是说，这种伪装能不能提高性能，主要看多线程多进程能不能提高性能。这种伪装主要是用异步编程的写法写多线程多进程。
+    signal 包提供了信号量，不过不同操作系统的信号量不一样，这可能导致代码没法兼容所有操作系统。
 
-* 猜测下 async 和 await 的实现？
+    signal(signal_value, handler) 注册信号处理函数。
+    os.kill(pid, signal) 向 pid 进程发送 singal 信号。
+    os.killpg(pgid, sid) 向 pgid 进程组发送 sid 信号。
 
-    我猜 async 可能是在函数体第一行加了 yield，用于交出 CPU 控制权。
-    await 也相当于加入了 yield，用于交出 CPU 控制权。
+自定义信号
 
-    async 和 await statement 使得写 coroutine 变得简单。不想 Python 3.5 之前，必须手动不断 next, send，必须手动写 loop。唯一
-    的劣势是会导致代码和之前的 Python 版本不兼容。
+    `Blinker`_ 可以自定义信号，实现异步。
+
+    .. code-block::
+
+        from blinker import signal
+
+        # 定义信号
+        zhaoqiaoxinmei = signal('zhaoqiaoxinmei')
+
+        # 定义信号处理函数
+        def qimunanxiong(s, **kwargs):
+            print("你就是神明眷顾的女孩")
+            print(kwargs['reply'])
+            print("有空聊")
+
+        # 绑定信号和信号处理函数
+        zhaoqiaoxinmei.connect(qimunanxiong)
+
+        # 发出信号，信号中带数据
+        zhaoqiaoxinmei.send(None, reply="嗯嗯，有点事儿")
 
 
-* linux 的 epoll/poll 是否会用在 asyncio 的异步调度器中？
 
-    尚不清楚
-
-
+Reference
+=========
 
 
-《expert python programming》 提了一句 `Blinker`_ 是 Python 中常用的 singal 框架，flask 作者也推荐了 Blinker 有空可以看看。
+- 程序设计语言概念 Chapter 13 concurrency
+- Blinker 官方文档： https://pythonhosted.org/blinker/
+- Expert-Python-Programming Chapter 13 concurrency
+- Python 3.5 之前的 coroutine 写法： http://www.dabeaz.com/coroutines/Coroutines.pdf
+-
 
 
 .. _Blinker: https://pythonhosted.org/blinker/
-
-
-
