@@ -1,0 +1,72 @@
+========
+Python
+========
+
+Python 是门不断发展的语言。可以时不时从下面的网站学习Python 的新特性和新规范。
+
+- `peps`_
+
+    Python 所有重要的变化，都会发 pep 通知。
+
+    pep 包括的内容有：
+
+        - Python 版本计划表
+        - Python 编码标准（PEP8 是代码规范，PEP3333 是 wsgi 接口规范，PEP248 是数据库接口规范）
+        - Python 新功能，包括新功能的讨论等等（比如 PEP 0492 介绍 asynio）
+
+- `Packaging Python Projects`_
+
+    为统一规范 Python 的包管理工具，出现了 PyPA(Python package Authority) 组织。该组织维护主流的 Python 包管理工具，并且在 `Packaging Python Projects`_ 更新 Python 包管理工具的使用方法。
+
+    当前来说主流的包管理工具：
+
+        - pip(装包)
+        - setuptools(打包)
+        - twine(把包 upload 到 package repository 中)
+        - wheel(推荐的打包格式。不是纯 Python 的 python 包要在 windows 上运行，至少要打成 wheel 包)
+        - `pypi`_ (当前 python 官方源)
+        - pyvenv 和 virtualenv(虚拟解释器环境)
+        - `warhouse`_ 很有可能会取代 pypi 成为 Python Package Repository
+
+    所有这些工具的用法可以在 `Packaging Python Projects`_ 找到。
+
+    python 官方镜像不稳定，为了可用性，需要自建 Python Package Repository，推荐使用 `devpi`_ 建立自己的 Python Package Repository。
+
+- Python 解释器
+
+    Python 有不同的解释器，对于这些不同解释器，略有了解即可。
+
+        - CPython: 使用最多的 Python 解释器，支持所有版本的 Python 语言，受 GIL 限制。
+        - `PyPy`_ ：比 Cpython 快。受 GIL 限制。
+        - `Stackless Python`_ : 引入了 greenthread（就是后来的 coroutine） 的概念，Stackless Python 的特性已经包括在了 stackless 内建包中。
+        - `IronPython`_ ： C# 实现的 Python，不受 GIL 限制。
+        - `Jython`_ ： Java 实现的 Python，不受 GIL 限制。
+
+    只有 CPython 支持所有 Python 语言版本。
+
+
+- 第三方工具
+
+    `awesome-python`_ 总结了不同领域中流行的 Python 包。
+
+
+
+Available recipes:
+
+.. toctree::
+    
+:
+    lob:
+    *
+
+
+.. _peps: https://www.python.org/dev/peps/
+.. _Packaging Python Projects: https://packaging.python.org/
+.. _pypi: https://pypi.org/
+.. _warhouse: https://github.com/pypa/warehouse
+.. _devpi: http://doc.devpi.net/
+.. _PyPy: http://pypy.org/
+.. _IronPython: http://ironpython.net/
+.. _Jython: http://www.jython.org/
+.. _Stackless Python: https://github.com/stackless-dev/stackless/wiki
+.. _awesome-python: https://github.com/vinta/awesome-python

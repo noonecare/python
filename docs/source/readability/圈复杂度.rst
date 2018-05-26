@@ -1,0 +1,43 @@
+===========
+圈复杂度
+===========
+
+:Author: 王蒙
+:Tags: Python 开发，代码规范
+
+:abstract:
+
+    圈复杂度是代码的重要指标，一般圈复杂度高的代码，可读性更差，代码更容易出错。
+
+.. contents::
+
+Audience
+========
+
+Python 开发，测试
+
+Prerequisites
+=============
+
+
+Problem
+=======
+
+- 什么是圈复杂度
+- 如何降低圈复杂度
+
+Solution
+========
+
+- 什么是圈复杂度
+
+
+
+- 如何降低圈复杂度
+
+
+
+Reference
+=========
+
+Put here references, and links to other documents.

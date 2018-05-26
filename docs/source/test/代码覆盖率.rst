@@ -1,0 +1,70 @@
+===========
+代码覆盖率
+===========
+
+:Author: 王蒙
+:Tags: code coverage, CI, code quality
+
+:abstract:
+
+    代码覆盖率低，说明你应该多做些测试。本节介绍 Python 代码覆盖率工具 coverage 。
+
+.. contents::
+
+Audience
+========
+
+Python 开发
+
+Prerequisites
+=============
+
+pip, python, pytest
+
+Problem
+=======
+
+怎样统计代码覆盖率？
+
+
+Solution
+========
+
+怎样统计代码覆盖率？
+
+
+coverage 可以统计代码覆盖率。coverage 常见用法就下面三句，非常简单。
+
+.. code-block::
+
+    # 使用 pytest 测试 test/test*.py，统计代码的覆盖率。
+    $ coverage run -m pytest --source test/test*.py
+
+执行上面一句之后，会生成 .coverage 文件。.coverage 文件用于生成关于代码覆盖率的报告。最常用的是生成表格形式的代码覆盖率报告和 html 形式的代码覆盖率报告。
+
+.. code-block::
+
+    # 生成表格形式的代码覆盖率报告
+    $ coverage report
+    Name                                                                                                     Stmts   Miss  Cover
+    ----------------------------------------------------------------------------------------------------------------------------
+    E:\Documents\source-code-reading\permission\__init__.py                                                     43     16    63%
+    E:\Documents\source-code-reading\permission\exceptions.py                                                   36     24    33%
+    E:\Documents\source-code-reading\permission\permission\models.py                                            159     24    85%
+    test_models.py                                                                                              106      0   100%
+    ----------------------------------------------------------------------------------------------------------------------------
+    TOTAL                                                                                                      344     64    81%
+
+    # 生成 html 形式的代码覆盖率报告。生成的报告在 htmlcov 目录下。
+    $ coverage html
+
+html 形式的代码覆盖率报告会显示每一行代码是否被覆盖。是可读性，可用性最好的分析报告。
+
+一般在开源项目中，会在源码仓库中保存 .coverage 文件而不会保留某种特定格式的代码覆盖率报告。因为 .coverage 比较小，且可以生成各种代码覆盖率报告。
+
+
+
+Reference
+=========
+
+- coverage: https://coverage.readthedocs.io/en/coverage-4.5.1/#quick-start

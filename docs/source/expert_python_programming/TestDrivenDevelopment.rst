@@ -76,7 +76,7 @@ Testing Coverage
 
 .. code-block::
 
-    coverage -m pytest {module or directory you want to test, default is .}
+    coverage run -m pytest {module or directory you want to test, default is .}
 
 命令行报告 coverage 信息
 

@@ -1,1 +1,0 @@
-vagrant 和 docker 都是提供独立可执行环境的技术。docker 广泛用于部署，而 vagrant 仍然在开发中大量使用

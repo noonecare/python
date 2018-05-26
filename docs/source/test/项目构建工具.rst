@@ -1,0 +1,40 @@
+===============
+项目构建工具
+===============
+
+:Author: 王蒙
+:Tags: Python 开发， 测试，构建工具，CI
+
+:abstract:
+
+    Python 项目构建工具有： Buildout 和 tox。本节主要介绍 tox 。
+
+.. contents::
+
+Audience
+========
+
+Python 开发
+
+Prerequisites
+=============
+
+tox
+
+Problem
+=======
+
+Explain the problem that this recipe is trying to solve.
+
+
+Solution
+========
+
+Give solution to problem explained earlier.  This is the core of a
+recipe.
+
+
+Reference
+=========
+
+Put here references, and links to other documents.
