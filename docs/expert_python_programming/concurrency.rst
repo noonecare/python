@@ -196,7 +196,6 @@ Reference
 - Blinker 官方文档： https://pythonhosted.org/blinker/
 - Expert-Python-Programming Chapter 13 concurrency
 - Python 3.5 之前的 coroutine 写法： http://www.dabeaz.com/coroutines/Coroutines.pdf
--
-
+- 优雅地 stop 线程: https://stackoverflow.com/questions/323972/is-there-any-way-to-kill-a-thread-in-python
 
 .. _Blinker: https://pythonhosted.org/blinker/
