@@ -10,6 +10,13 @@ Welcome to wangmeng-python's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   readability/index.rst
+   test/index.rst
+   networks/index.rst
+   IPTCP/index.rst
+   dev_environment/index.rst
+   database/index.rst
+
 
 
 Indices and tables
