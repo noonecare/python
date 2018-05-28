@@ -1,0 +1,193 @@
+===========
+部署服务
+===========
+
+:Author: 王蒙
+:Tags: Python 服务 部署
+
+:abstract:
+
+    介绍 python 如何部署 Saas 应用。
+
+.. contents::
+
+
+Audience
+========
+
+网络服务，API
+
+Problem
+=======
+
+
+Solution
+========
+
+The Twelve-Factor App
+-----------------------
+
+开发易于部署的 App 的 12 个关键要素：
+
+    #. 基准代码。一份基准代码，多份部署。
+    #. 依赖： 显示声明依赖关系。
+    #. 配置：在环境中存储配置。
+    #. 后端服务：把后端服务当做附加资源。
+    #. 构建发布运行：严格分离构建和运行。
+    #. 进程： 以一个或者多个无状态进程运行应用。
+    #. 端口绑定： 通过端口绑定提供服务。
+    #. 并发： 通过并发模型进行扩展。
+    #. 易处理：快速启动和优雅终止。
+    #. 开发环境和线上环境等价。尽可能的保持开发，预发布，线上环境相同。
+    #. 日志。把日志当做事件流。
+    #. 管理进程。后台管理任务当作一次性进程运行。
+
+
+使用 Fabric 自动部署
+----------------------------
+
+`Fabric`_ 能把代码远程部署到多台服务器。Fabric 能执行 shell 命令，能通过 ssh 在远程执行 shell 命令。 Fabric 还能交互式地输入密码验证。Fabric 中 run 和 local 是其中最重要的函数。
+
+
+构建自己的 package index 和 PyPI 镜像
+-----------------------------------------
+
+推荐使用 `devpi`_ 构建公司专属的 package index, 保证 package index 的可用性，方便发布代码。
+
+PyPI mirroring
+~~~~~~~~~~~~~~~~~
+推荐使用 `devpi`_ 构建 package index：
+
+    * 能缓存你需要的 Python 官方 PyPI 包。
+    * 能周期更新你需要的 Python 官方 PyPI 包。
+
+其他的搭建 PyPI 工具，要不不同步 Python 官方 PyPI 包，要不就是全备份导致磁盘占用特别高。相对来说 devpi 提供了 Python 官方 PyPI
+包，同时又不占用过多的资源，唯一的缺点是 devpi 包缓存的官方 PyPI 包可能不是最新的。
+
+
+使用包发布应用
+---------------------
+
+setup.py 中能够自定义操作，这些操作可用于自动化部署应用。这些步骤一般会在开发环境执行。
+
+MANIFEST.in 可以用于 bundle 很多文件，比如 SASS 或者 LESS 等等。
+
+
+
+Using process supervision tools
+--------------------------------------
+
+应用经常会启动多个进程，所以需要使用进程管理工具。
+
+在 Python 中，常用 `Supervisor`_ 和 `Circus`_ 来管理用户应用进程。 Supervisor 暂时不支持 Python3, 所以可以使用 Circus。
+
+
+不要使用超级用户部署
+--------------------------------------------
+
+常常用和应用同名的用户，部署应用。
+
+绝对不要以超级用户权限部署应用，那样的话，应用之间会相互影响。
+
+
+反向代理
+------------------------
+
+`Nginx`_ 还是很有必要学一下的。
+
+使用反向代理的好处有：
+
+* TLS/SSL 一般会由 nginx 来做。
+* HTTP 一般服务于 80 端口，HTTPS 一般服务于 433 端口。普通用户没有权限绑定 80/443 端口。但是超级用户（反向代理一般使用超级用户权限执行）有权限。
+* Nginx 能高效地提供静态文件。
+* Nginx 可以伪装出多个 host。DNS 中一个 IP 可以对应多个域名。nginx 服务器中每个 server 通过 server_name 选项匹配域名，这样就实现了一台主机用多个域名，提供多种服务的功能。
+* nginx 可以提供缓存和负载均衡的功能。
+
+
+Reloading processes gracefully
+------------------------------
+
+#. 当接到 TERM 信号时，应用应该停止接受新的请求，并且处理完所有已经接受的请求，然后退出。
+#. 当接到 HUP 信号时，应用旧节点优雅退出（不再接受请求，但是会处理已经接受到的请求），新节点应该开始接受新的请求，确保服务没有间断。
+#. Python 中的 `Gunicorn`_ 和 `uWSGI`_ 都支持不间断服务的重载方式。可以参考这两个框架的做法设计自己的应用。
+
+todo: 我挺好奇 Gunicorn 是怎么实现这种优雅退出的方式的。
+
+
+监控维护应用
+-----------------------------------
+
+#. 查看日志，比如不同返回码的日志有多少条。
+#. 错误日志和警告日志。
+#. 资源占用（比如 CPU, memory 和带宽等）。
+#. 和商业价值有关的指标（客户占有率，投资回报等）。
+
+
+Logging Errors
+~~~~~~~~~~~~~~~~
+
+不管程序写得多完美，都保不齐会发生错误。要做到及时发现错误。
+
+一般从日志中发现错误，`Sentry`_ 是报告系统错误最有名的工具。
+
+Sentry 开源的，可以自己维护 Sentry 服务，也可以选择付费使用 Sentry 服务。
+
+使用 Sentry 服务，需要 DSN(Data Source Name)。 我去 Sentry 网注册了个 DSN(https://13c5b7dbdb544a7ea37177997fbc8e66:d68d511723e147f4bbdb132af22f04aa@sentry.io/1197614)， 有了 DSN，就可以把错误日志写入到 DSN 中。
+
+对于 Python，Sentry 提供了 **raven** 包。python 装上这个包之后，很容易与 Sentry 集成。具体的参见 `Sentry`_ 。
+
+
+Monitoring system and application metrics
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+monitor performance 的工具非常多。比较常用的有:
+
+#. `Munin`_
+#. `StatsD`_
+#. `Graphite`_
+
+
+Dealing with application logs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+根据 12 factor app 的建议，application code 以 event stream 的形式抛出日志。application code 本身不会收集和记录日志。收集和记录日志是当前执行环境要负责的。
+
+Python logging 可以使用配置文件，配置应用的日志该怎么收集和记录。我认为这种方式已经是非常好了，使用配置文件，相当于是让当前执行环境负责收集和记录日志。
+
+Circus 和 supervisor 等进程管理工具，也提供了收集和记录日志的功能。
+
+Linux 中的 logrotate 提供了收集和记录日志的功能，《expert python programming》 一书推荐使用 logrotate 收集和记录日志。不过认为这可能是因为该书作者用习惯 logrotate 了。
+
+
+Tools for log process
+~~~~~~~~~~~~~~~~~~~~~~~
+
+日志中不仅有报错，还有与业务相关的很多信息。很多商业智能的工具从日志中挖掘商业信息。从日志中挖掘信息，最有名的工具是 ELK(Elasticsearch, Logstash 和 Kibana)。
+
+
+Reference
+=========
+
+.. _Circus: http://circus.readthedocs.io/en/latest/
+.. _Supervisor: http://www.supervisord.org/
+.. _Gunicorn:
+.. _uWSGI:
+.. _Sentry: https://docs.sentry.io/clients/python/
+.. _Graphite: http://graphiteapp.org/
+
+.. _Fabric: http://www.fabfile.org
+.. _devpi: https://devpi.net/docs/devpi/devpi/stable/%2Bd/index.html
+.. _Nginx: https://www.nginx.com/resources/wiki/start/index.html
+.. _Munin: http://munin-monitoring.org/
+.. _StatsD: http://python-statsd.readthedocs.io/en/latest/
+
+- 12 factor app: https://12factor.net/zh_cn/
+- Fabric: http://www.fabfile.org
+- devpi: https://devpi.net/docs/devpi/devpi/stable/%2Bd/index.html
+- Circus: http://circus.readthedocs.io/en/latest/
+- Supervisor: http://www.supervisord.org/
+- Nginx: https://www.nginx.com/resources/wiki/start/index.html
+- Munin: http://munin-monitoring.org/
+- StatsD: http://python-statsd.readthedocs.io/en/latest/
+- Graphite: http://graphiteapp.org/
