@@ -14,7 +14,7 @@ Welcome to wangmeng-python's documentation!
    test/index.rst
    networks/index.rst
    IPTCP/index.rst
-   dev_environment/index.rst
+   dev_deploy/index.rst
    database/index.rst
 
 

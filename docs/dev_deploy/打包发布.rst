@@ -1,0 +1,183 @@
+===========
+打包发布
+===========
+
+:Author: 王蒙
+:Tags: Python 打包，发布代码
+
+:abstract:
+
+    介绍 python 如何打包发布。
+
+.. contents::
+
+Audience
+========
+
+Python 开发
+
+Prerequisites
+=============
+
+Python 基础语法
+
+Problem
+=======
+
+
+Solution
+========
+
+打包
+------------------
+
+
+`PyPA(Python Package Authorization)`_ 推荐使用 `setuptools` 给 Python 打包，PyPA 还提供了 `Python Packing User Guide 文档`_ 作为 Python 打包的权威指南。
+
+PyPA 推荐的包管理工具如下
+
+    #. pip 装包
+    #. setuptools 打包
+    #. wine 上传包
+    #. virtualenv or venv 构建项目级别的独立开发环境
+    #. wheel 能打成 wheel 包尽量导成 wheel 包
+    #. pypi（warehouse 有取代 pypi 的可能）
+
+setup.py
+~~~~~~~~~~
+
+
+#. setup.py 一般会读取 README.rst 的内容，把 README.rst 作为 setup 函数中的 long_description 的值。
+#. setup.py 一般会读取 project 下的 `__init__.py` 文件中的 `__VERSION__` 变量值，以这个值作为 setup 函数的 version 参数值。
+#. 项目的 dependencies 写到 setup.py 文件的 install_requires 参数中。
+#. setup.py 中的 entry_points 选项可以自定义 command。自定义 command 在打包后可以直接使用。
+
+
+Source package versus built packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+sdist
+^^^^^
+
+以源码形式打包，就是说包解压之后是文本形式的源代码。
+
+python setup.py sdist
+
+bdist
+^^^^^
+
+以二进制形式打包，就是说包解压之后是二进制。
+
+python setup.py bdist
+
+
+# 推荐的做法，打 wheel 包
+python setup.py bdist_wheel
+
+
+
+开发过程引用正在开发的包
+------------------------------------
+
+
+pip install -e <project-path>
+
+python setup.py develop
+
+是以开发模式安装包，对包的改动，可以立即反应到当前 Python 环境中。
+
+
+Namespace Packages
+----------------------------------
+
+为什么要用 Namespace Packages?
+
+Namespace Package 相当于是比 package 更高一级的抽象。如果包下面包含子包，而子包需要独立发布。这时候，你需要 Namespace Package。Namespace package 中的每一个 package 可以单独发布和安装。
+
+《expert python programming》 原话是这么说的：Namespace packages are especially useful if you have your application components developed, packaged, and versioned independently but you still want to access them from the same package.
+
+
+
+定义 Namespace Packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Python3 只有目录下有 python 源码，且该目录下没有 `__init__.py`，那么这个目录就是个
+Namespace。
+
+Python2 定义 Namespace Package 需要在 setup.py 文件中，指明 `namespace_packages`， 而且就算是 namespace package, 该目录下也
+需要有 `__init__.py` 文件。Python2 中定义 namespace package 的 setup.py 文件，大致如下：
+
+.. code-block::
+
+    from setuptools import setup
+
+    setup(
+        name='acme.templating',
+        packages=['acme.templating'],
+        # python2 必须指明 namespace_packages
+        namespace_packages=['acme'],
+    )
+
+
+不过简单地在 setup.py 中指明 `namespace_package` 可能被人遗忘，所以在 Python2 中，最好在 namespace 下的 `__init__.py` 文件中写上
+
+    .. code-block::
+
+        __import__('pkg_resources').declare_namespace(__name__)
+
+
+上传包到 index
+-------------------
+
+先打包，打完包后使用
+
+.. code-block::
+
+    # 上传到 index 中
+    twine upload dist/*
+    # 在 index 中 register（这一句现在貌似不需要了）
+    twine register dist/*
+
+
+\.pypirc
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block::
+
+    [distutils]
+    index-server =
+        pypi
+        other
+
+    [pypi]
+    repository: <repository-url>
+    username: <username>
+    password: <password>
+
+    [other]
+    repository: <repository-url>
+    username: <username>
+    password: <password>
+
+
+\.pypirc is supported by pip, twine, distutils, and setuptools.
+
+
+Standalone executables
+----------------------
+
+Popular Tools:
+
+#. PyInstaller
+#. cx_Freeze
+#. py2exe and py2app
+
+Security of Python code in executable packages
+----------------------------------------------
+
+最安全的方式是使用 RESTFUL 接口提供服务。
+
+
+
+.. _PyPA(Python Package Authorization): https://github.com/pypa
+.. _Python Packing User Guide 文档: https://packaging.python.org
