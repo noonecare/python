@@ -1,0 +1,118 @@
+===========
+优化算法
+===========
+
+:Author: 王蒙
+:Tags: Python 开发，优化，算法，设计，架构
+
+:abstract:
+
+    介绍常用的优化办法，包括选择合适的数据结构，近似算法，概率算法和缓存任务队列等架构。
+
+.. contents::
+
+Audience
+========
+
+Python 开发
+
+Prerequisites
+=============
+
+Python 数据类型，算法分析与设计
+
+Problem
+========
+
+- 常用的优化办法
+
+
+Solution
+===========
+
+
+数据结构
+~~~~~~~~~~~~~~~~~~~~~~
+
+选择合适的数据结构，能够有效地减低复杂度。
+
+    明显的例子，是判断一个元素是不是包含在 list 中的时间复杂度是 O(n), n 是 list 的长度；判断一个元素是不是包含在一个 set 中的时间复杂度是 O(1)。因为 set 是用 hash table 实现的。
+
+    .. code-block::
+
+        python3 -m timeit -s 'd = {}; d.setdefault("x", None);'
+        # 功能上和上一句代码一样，但就是比上一句快
+        python3 -m timeit -s 'from collections import defaultdict; d = defaultdict(lambda: None); d["x"]'
+
+
+
+    除了使用合理地使用数据类型之外，尽量减小 loop 体代码量，也可能能提高效率。
+
+
+近似算法
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+- 采用启发式或者近似算法。
+
+    优化问题，至今都没有算法可以完全避免局部最优解。
+
+    旅行商问题，至今都是 NP 难的。
+
+    提供一个答案，提供这个答案和误差的范围，然后大致就以这个可计算的答案做为答案。
+    比如 Simulated annealing, Genetic algorithm, Tabu search, Ant colony optimization, Evolutionary computation 都是启发
+    式的算法。
+
+- 使用概率数据结构。
+
+    - HyperLogLog: redis 的核心算法。
+    - Blooomfilter
+
+
+延迟处理
+~~~~~~~~~~~~~
+
+    网络服务强调响应。可以把一些工作先丢到后台去执行，等这些任务做完了，再异步通知到用户。
+
+    延迟处理常常需要用到消息队列和分布式的任务队列。
+
+    Python 中常用的任务队列有：
+
+        - Celery
+        - RQ
+
+    常用的消息队列有：
+
+        - ZeroMQ
+        - RabbitMQ
+        - Kafka
+
+
+
+缓存
+~~~~~~~~~~~~~~~
+
+- 缓存复杂度高的操作，常用的 memorization 算法就基于这个思路。
+
+    Python 有 functools.lru_cache 提供了 last recently used 机制的缓存功能。
+
+- 缓存有时限，比如 session 经常有实现，如何实现由时限的缓存。
+
+    可以自己实现有时限的缓存机制。不过更常见的是使用现成的缓存服务。比如 redis 和 memcached。
+    使用 redis 和 memcached 时，最大的问题是如何给出 key, 常用的方式是用 hash 值作为 key, python 中 hashlib 提供了这个功能。不过要记住，hash 函数可能会 collision。
+
+
+Reference
+============
+
+
+- ZeroMQ: http://zeromq.org/
+- RabbitMQ: http://www.rabbitmq.com/getstarted.html
+- Kafka: http://kafka.apache.org
+- BloomFilter:
+- Celery: http://docs.celeryproject.org/en/latest/
+- RQ: http://python-rq.org/
+- HyperLogLog:
+- redis:
+- memcached:
