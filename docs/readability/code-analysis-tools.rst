@@ -47,7 +47,7 @@ Solution
 
     不管哪种检查工具，都会报告被检查代码，哪些行的哪些列的代码不合哪些规范。比如如下检查结果：
 
-    .. code-block::
+    .. code-block:: shell
 
         # 检查 mock_demo.py 是否符合规范
         $ pylint mock_demo.py
@@ -92,7 +92,7 @@ Solution
 
         自定义规范一般是在默认代码规范基础上做定制。使用
 
-            .. code-block::
+            .. code-block:: shell
 
                 $ pylint --generate-rcfile > .pylintrc
 
@@ -117,7 +117,7 @@ Solution
 
             - 更多圈复杂度的内容请查考 `圈复杂度`_ 。
 
-                .. code-block::
+                .. code-block:: shell
 
                     # 检查圈复杂度
                     $ flake8 --max-complexity 1 mock_demo.py
@@ -131,7 +131,7 @@ Solution
 
         - 通过在源码中加注释，通知 flake8 不要检查该行代码。
 
-            .. code-block:: Python
+            .. code-block:: python
 
                 -*- coding: utf-8 -*-
                 import os

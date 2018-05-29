@@ -67,7 +67,7 @@ Solution
         - timeit 包能非常简便地测试函数耗时（如果你有 pycharm，使用 cProfile 已经很简单，没有必要用 timeit。如果你用命令行操作，timeit 用起来非常简便，尤其是测单行代码的耗时尤其方便）。
 
 
-        .. code-block::
+        .. code-block:: shell
 
             $ python3 -m timeit -s 'a = [str(i) for i in range(10000)]'
 

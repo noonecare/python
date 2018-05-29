@@ -38,7 +38,7 @@ Solution
 
     明显的例子，是判断一个元素是不是包含在 list 中的时间复杂度是 O(n), n 是 list 的长度；判断一个元素是不是包含在一个 set 中的时间复杂度是 O(1)。因为 set 是用 hash table 实现的。
 
-    .. code-block::
+    .. code-block:: shell
 
         python3 -m timeit -s 'd = {}; d.setdefault("x", None);'
         # 功能上和上一句代码一样，但就是比上一句快

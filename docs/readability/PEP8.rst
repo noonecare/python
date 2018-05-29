@@ -547,6 +547,7 @@ Ok, but confusing:
 
 
 Yes:
+
 .. code-block:: python
 
     FILES = [
@@ -559,6 +560,7 @@ Yes:
                )
 
 No:
+
 .. code-block:: python
 
     FILES = ['setup.cfg', 'tox.ini',]

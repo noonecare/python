@@ -66,6 +66,7 @@ Solution
     - 所有的动作使用 METHOD 实现。
     - GET, HEAD METHOD 不要对资源做任何修改。
     - 修改资源使用 POST, DELETE 等操作。
+    -
 
 
 Reference
@@ -74,6 +75,6 @@ Reference
 - 见到的另一篇讲解Restful不错的文章： https://blog.csdn.net/fengxinziyangyang/article/details/51459299
 - Representational State Transfer (REST)： http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
 - 重新解析REST Service： https://blog.csdn.net/zhoudaxia/article/details/16716403
-
+- RESTful API 设计指南: http://www.ruanyifeng.com/blog/2014/05/restful_api.html
 
 .. _重新解析REST Service: https://blog.csdn.net/zhoudaxia/article/details/16716403

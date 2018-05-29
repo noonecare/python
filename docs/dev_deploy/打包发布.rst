@@ -107,7 +107,7 @@ Namespace。
 Python2 定义 Namespace Package 需要在 setup.py 文件中，指明 `namespace_packages`， 而且就算是 namespace package, 该目录下也
 需要有 `__init__.py` 文件。Python2 中定义 namespace package 的 setup.py 文件，大致如下：
 
-.. code-block::
+.. code-block:: python
 
     from setuptools import setup
 
@@ -121,7 +121,7 @@ Python2 定义 Namespace Package 需要在 setup.py 文件中，指明 `namespac
 
 不过简单地在 setup.py 中指明 `namespace_package` 可能被人遗忘，所以在 Python2 中，最好在 namespace 下的 `__init__.py` 文件中写上
 
-    .. code-block::
+    .. code-block:: python
 
         __import__('pkg_resources').declare_namespace(__name__)
 
@@ -131,7 +131,7 @@ Python2 定义 Namespace Package 需要在 setup.py 文件中，指明 `namespac
 
 先打包，打完包后使用
 
-.. code-block::
+.. code-block:: shell
 
     # 上传到 index 中
     twine upload dist/*
@@ -142,7 +142,7 @@ Python2 定义 Namespace Package 需要在 setup.py 文件中，指明 `namespac
 \.pypirc
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: shell
 
     [distutils]
     index-server =

@@ -52,7 +52,7 @@ Solution
 
     **pyvenv** 和 **virtualenv** 是构建虚拟 Python 环境的工具。而且两种工具的使用几乎完全一样。文本以 **pyvenv** 为例做介绍。
 
-    .. code-block::
+    .. code-block:: shell
 
         # 构建名为 wangmeng-python Python 环境，名称可以随便取
         $ pyvenv wangmeng-python
@@ -62,15 +62,17 @@ Solution
 
 - 进入/退出虚拟解释器环境
 
-    $ cd wangmeng-python
-    # 下一步有坑
-    $ . ./bin/activate
-    (pyvenv-python) $ which python
-    /root/wangmeng-python/virtualenv-python/bin/python
-    # 已经进入虚拟 Python 环境
-    # 退出虚拟 Python 环境
-    (pyvenv-python) $ deactivate
-    $
+    .. code-block:: shell
+
+        $ cd wangmeng-python
+        # 下一步有坑
+        $ . ./bin/activate
+        (pyvenv-python) $ which python
+        /root/wangmeng-python/virtualenv-python/bin/python
+        # 已经进入虚拟 Python 环境
+        # 退出虚拟 Python 环境
+        (pyvenv-python) $ deactivate
+        $
 
     踩过的坑：
 
@@ -83,7 +85,7 @@ Solution
 
 - 重现 Python 环境
 
-    .. code-block::
+    .. code-block:: shell
 
         # 把当前环境的包依赖写入 requirements.txt。
         $ pip freeze > requirements.txt

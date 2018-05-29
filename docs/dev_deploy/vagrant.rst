@@ -14,7 +14,7 @@ Vagrant
 Audience
 ========
 
-软件开发
+Python 开发
 
 Prerequisites
 =============
@@ -53,7 +53,7 @@ Vagrant 基本使用方法？
 
 - vagrant 最常用的命令
 
-    .. code-block::
+    .. code-block:: shell
 
         # 在工程的 root 目录下执行如下语句，会生成 VagrantFile 配置文件
         $ vagrant init {box_name}
@@ -71,7 +71,7 @@ Vagrant 基本使用方法？
 
     怎样把迅雷下载的 box 文件，添加到本地 box 仓库呢，请看下面的代码。
 
-    .. code-block::
+    .. code-block:: shell
 
         # 把保存在 {local_box_path} 的 box 添加到本地 box 仓库中，在本地 box 仓库中这个 box 的名为 {box_name} 。
         $ vagrant box add {box_name} {local_box_path}
@@ -98,19 +98,19 @@ VagrantFile 中重要的配置有：
 
     - 同步目录（类似于 Docker 中的 Volume）
 
-        .. code-block::
+        .. code-block:: shell
 
             config.vm.synced_folder  "/Users/helei/www", "/vagrant"
 
     - 端口转发（类似于 Docker 中的 port）
 
-        .. code-block::
+        .. code-block:: shell
 
             config.vm.network :forwarded_port, guest: 80, host: 80
 
     - 是否能够访问互联网
 
-        .. code-block::
+        .. code-block:: shell
 
             # 不能访问互联网
             config.vm.network "private_network", ip: "192.168.33.10"

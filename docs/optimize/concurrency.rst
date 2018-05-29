@@ -64,7 +64,7 @@ Python 多线程多进程最大的特点是 GIL 全局锁。Python 代码在执�
 
 Python 多线程多进程的另一个特点，就是会以 context manager 的语法写锁，写 pool。比如：
 
-.. code-block::
+.. code-block:: python
 
     with Lock():
         ...
@@ -132,7 +132,7 @@ Python3.5 之前，如何实现异步编程？
 
     之前使用 generator 来定义 coroutine。比如下面的例子。
 
-    .. code-block::
+    .. code-block:: python
 
         def f():
             x = yield
@@ -169,7 +169,7 @@ Python3.5 之前，如何实现异步编程？
 
     `Blinker`_ 可以自定义信号，实现异步。
 
-    .. code-block::
+    .. code-block:: python
 
         from blinker import signal
 
