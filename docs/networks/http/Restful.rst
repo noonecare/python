@@ -27,7 +27,7 @@ Problem
 
 - Restful 风格的要求
 
-- Restful best practice
+- 最佳实践
 
 
 Solution
@@ -60,13 +60,29 @@ Solution
 
 
 
-- Rest Best Practice
+- 最佳实践
 
     - URI 用名词命名，不要用动词命名。比如你要做删除的动作，不要写成 GET /someresouce/delete， 应该写成 DELETE /someresource 。
-    - 所有的动作使用 METHOD 实现。
+    - 所有的动作使用 HTTP METHOD 实现。
     - GET, HEAD METHOD 不要对资源做任何修改。
-    - 修改资源使用 POST, DELETE 等操作。
-    -
+    - 修改资源使用 POST, PUT, DELETE 等操作。
+    - 新建资源使用 POST 不要使用 PUT。
+    - PUT 方法要求是幂等的，POST 一般不是幂等的。
+    - 表示资源集合的URI采用复数。常见的 Restful API 几乎表示资源集合都采用复数。表示资源集合中具体某一个资源，直接使用 /id 的表示。比如 /someresources/1 。
+    - 出错时，Restful API 返回的响应中，应当包含 body, 该 body 一定要记录错误的信息（比如记录错误的原因，错误类型，错误发生在哪里等），一般 body 中也会包含错误码。Restful API 返回的响应的状态码以及响应的 body 中包含的错误码都应该采用 HTTP 协议规定的错误码，不要自定义错误码。
+    - API 版本可以放在 header 中，也可以放在资源 URL 之前。如果资源有嵌套，请放在具体的资源之前，不要放在 URL 的根路径之前。
+
+
+- 优秀 RestAPI 范例
+
+
+- 我踩过的坑
+
+    - 资源集合没有用复数。
+    - 自定义了错误码。
+    - 使用 PUT 创建资源。
+    - API 版本号放在 URL 末尾。
+
 
 
 Reference
