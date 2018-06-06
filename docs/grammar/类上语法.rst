@@ -1,5 +1,5 @@
 ===========
-Vagrant
+类级语法
 ===========
 
 :Author: 王蒙
@@ -70,7 +70,7 @@ Python3 所有的类都继承自 `object` 类， Python2 中有继承自  `objec
 
 Python3 中所有类都是新式类，不管怎么定义类。 Python2 中只有明确继承自 object 或者继承自其它新式类的类才是新式类。除此之外是旧式类。比如如下 Python2 代码：
 
-.. code-block::
+.. code-block:: python
 
     # 旧式类
     class A:
@@ -157,8 +157,105 @@ descriptor 协议:
 我认为这段描述没有谈到 MRO 对于 `__getattribute__()` 的影响。我补充一点就是父类的 data-descriptor 也是子类的 data-descriptor，父类的 non-descriptor 也是子类的 non-descriptor。
 
 
+metaclass
+~~~~~~~~~~~~~
+
+Python3 中一切数据都是对象。Python3 对象可以分为两类，一类继承自 type, 一类没有继承自 type。继承自 type 的类能做 metaclass, metaclass 用于自定义类（Python3 中类也是对象）的创建。默认的 metaclass 是 type。
+
+Python 类创建的过程
+
+类创建时，先调用该类的 metaclass 的 `__prepare__` 方法，再调用 `__new__` 方法，最后调用 `__init__` 方法。
+
+类实例化时，会先调用其 metaclass 类的 `__call__` 方法，再调用它本身的 `__init__` 方法，返回类的实例。
+
+下面的代码是论证上面观点的例子：
+
+    .. code-block:: python
+
+        class RevealingMeta(type):
+            def __new__(mcs, name, bases, namespace, **kwargs):
+                print(mcs, "__new__ called")
+                return super().__new__(mcs, name, bases, namespace)
+
+            @classmethod
+            def __prepare__(mcs, name, bases, **kwargs):
+                print(mcs, "__prepare__ called")
+                return super().__prepare__(name, bases, **kwargs)
+
+            def __init__(cls, name, bases, namespace, **kwargs):
+                print(cls, "__init__ called")
+                super().__init__(name, bases, namespace)
+
+            def __call__(cls, *args, **kwargs):
+                print(cls, "__call__ called")
+                return super().__call__(*args, **kwargs)
+
+
+        class B(metaclass=RevealingClassCreation):
+             """展示类创建的过程1。"""
+
+        class C(metaclass=RevealingClassCreation):
+            """展示类创建的过程2。"""
+
+        print('+++++++++++++++++++++++++++++++++++++++')
+
+        B()
+        C()
+
+
+下面具体介绍 type 的 `__new__`, `__prepare`, `__init__` 和 `__call__` 方法都做了什么。
+
+
+    - metaclass 中的 \_\_prepare\_\_(mcs, name, bases, **kwargs) 方法。
+
+        返回 namespace, 该 namespace 是 mapping 类型，会交给下面的 `__new__` 方法的 namespace 形参。namespace 类对象的 `__dict__` 。
+
+        注意 `prepare` 是 `classmethod`。
+
+    - metaclass 中的 `__new__(mcs, name, bases, namespace)` 方法。
+
+        `__new__` 创建名为 name, 父类为 bases 的，以 namespace 作为 `__dict__` 的类。
+
+
+    - metaclass 中的 \_\_init\_\_(cls, name, bases, namespace, **kwargs) 方法。
+
+        可以在 `__new__` 构建的类的基础上，改造类（比如改造类的属性），`__init__` 的返回值为空。
+
+
+
+    - metaclass 中的 \_\_call\_\_(cls, *args, **kwargs) 方法。
+
+        metaclass 构建出的类，每次实例化时，都会先调用 metaclass 的 `__call__` 方法返回该实例，然后调用构建类的 `__init__` 修改该实例。
+
+
+Python 2 和 Python3 使用 metaclass 的差异
+
+    Python3 中用如下的方式声明 metaclass
+
+        .. code-block::  python
+
+            class B(metaclass=RevealingMeta):
+                ...
+
+    Python 2 中使用如下的方式声明 metaclass
+
+        .. code-block:: python
+
+            class B(object):
+
+                __mataclass__ = RevealingMeta
+
+
+metaclass 常见的应用
+
+
+    metaclass 用的比较少。见过的也就是 Django ORM 用过。使用 metaclass 请慎重，多想想有没有更简单的方法。
+
+
+
 Reference
 ============
 
 - Python cookbook chapter 9 meta programming.
 - Expert Python Programming Chapter 3 Syntax Best Practices above the class level.
+- PEP 422: https://www.python.org/dev/peps/pep-0422/

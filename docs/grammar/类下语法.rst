@@ -1,0 +1,260 @@
+=================
+Python 难懂的语法
+=================
+
+:Author: 王蒙
+:Tags: 语法，数据类型，dict, tuple, list, string， collections
+
+:abstract:
+
+    介绍 Python 中重要，Pythonic ，与类关系不大的语法。
+
+.. contents::
+
+Audience
+========
+
+Python 开发
+
+Prerequisites
+=============
+
+数据结构，算法基础
+
+Problem
+=======
+
+- Python 数据类型
+- 列表表达式，字典表达式，集合表达式
+- collections
+- iterator
+- generator
+- unpack
+- zip
+- decorator
+
+
+
+Solution
+========
+
+Python 数据类型
+~~~~~~~~~~~~~~~~~~~~~~~
+
+string 和 bytes
+
+    - Python2 和 Python3 关于字符串有重大的区别
+
+        - Python2 中 unicode, str(bytes 就是 str) 和 basestring 类型。 unicode 不是 str 类型，unicode 和 str 不是同一个类型，但都是 basestring 的子类。
+        - Python3 有 bytes, str(unicode 就是 str) 类型。bytes 和 str 不同。
+        - Python2/Python3 都是用 b 前缀表示 bytes 字面量, 是用 u 前缀表示 unicode 字面量。
+        - Python2 源码默认密码是 ascii 码， Python3 源码默认编码是 utf-8，为了兼容可以在源码开头加上编码声明。
+
+    - string 和 bytes 相互转化
+
+        .. code-block:: python
+
+            # errors 表示该如何处理编码解码错误，比如 strict，ignore 等。
+            bytes(source, encoding, errors)
+            str.encode(encoding, errors)
+
+
+            str(source, encoding, errors)
+            bytes.decode(encoding, errors)
+
+
+    - 拼接字符串
+
+        - % 或者 format 拼接方式可读性最好。
+        - join 方法效率较高。
+        - + 字符串的方法，尽量不要用。
+
+    - str 是 hashable 和 immutable 的。
+
+    - `__repr__` 方法和 `__str__` 方法。
+
+        - 最明显的区别是: obj 能够通过 eval(repr(obj)) 生成，但是 obj 通常不能由 str(obj) 生成。
+
+        - `__repr__` 用于调试；`__str__` 是简单地打印结果。
+
+list
+
+    list 是 mutable 的，不是 hashable 的。
+
+    list append 元素的摊还复杂度（Amortized Complex）是 O(1)。
+
+    list 查找元素的时间复杂度是 O(n)，n 表示 list 的长度。
+
+    list 从头插入元素的时间复杂度是 O(n), n 表示 list 的长度。
+
+    list 不是使用链表实现的，list 是用连续一段内存实现的。list 保存 list 实际长度，和连续内存长度作为属性值。如果 list 的实际长度超过分配的内存长度，那么会重新分配内存，比如分配 2x 内存长度的内存。如果List 的实际长度小于分配长度的 1/2。就会收回1/2 内存长度的内存。
+
+
+tuple
+
+    tuple 是 immutable 的， hashable 的。
+
+
+dict & set
+
+    CPython 中， dict 和 set 都是使用 hash table 实现的。所以要求 dict 和 set 的 key 必须是 hashable 的。
+
+    CPython 中，dict 和 set 都是使用 **Open Address** 的手段，来解决冲突(Collision) 的问题。
+
+    因此，在 dict 中寻找 key, 在 set 中寻找元素的平均时间复杂度都是 O(1)（更准确的说是 O(1 + \alpha), \alpha 称为加载系数）。
+
+    在 dict 中寻找 key, 在 set 中寻找元素的最差时间复杂度是 O(n), n 是 dict 曾经达到的最大长度。
+
+    关于为什么最差时间复杂度中的 n 是 dict 曾经达到的最大长度。我有如下猜测：
+
+            CPython 是如何实现删除 key 的操作的？我猜是这样处理的，就是每个 hashTable 的 slot 都添个 flag 表示是否还有效。删除某个key,就是修改flag,说明这个 key 无效了。以此实现删除。我猜的这种做法，刚好解释了最差时间复杂度O(n) 中的 n 为什么是添加过的所有 key 的个数，而不是当前 key 的个数。
+
+    dict 的 keys(), values() 和 items() 方法
+
+        Python2 中 dict 的 keys(), values() 和 items() 返回的是当前 dictionaries 的 keys, values 和 items。
+
+        Python3 中 dictionaries 的 keys(), values() 和 items() 返回的是 dictionaries 的 keys 的view, values 的 view 和 items 的view。可以认为是指向 dictionaries 的 keys, values 和 items 的指针。这样的好处是: 比如 a = dict_item.keys() 之后 dict_item 添加了很多 key, 此时 a 中包含了新添加的 keys；而 Python2 中是不包含的。下面这段代码，Python2 和 Python3 的执行结果是不同的。
+
+        .. code-block:: python
+        
+            >>> words = {'foo': 'bar', 'fizz': 'bazz'}
+            >>> items = words.items()
+            >>> words["spam"] = 'egg'
+            >>> items
+
+
+        Python3 中 keys() 中key 出现的顺序刚好和 values() 中 dict[key] 出现的顺序一致（不管何时，不管做了什么操作）。
+        
+        Python 中的 set 是 mutable 的, franzenset 是 immutable, hashable 的。
+        
+        一般 immutable 的数据是 hashable 的， hashable 的一定是 immutable 的。定义了 `__hash__` 和 `__eq__` 方法的数据类型是 hashable 的。
+        
+        
+collection 模块
+
+    - namedtuple（可以用 attribute name 访问数据，不必使用 index 访问）
+    - OrderedDict（能保持添加 key 的顺序）
+    - defaultdict（能给 key 赋默认的 value）
+    - deque(这是用双向链表实现的，如果用队列，请使用 deque, 不要用 list)
+    - Counter(很有意思，会统计 list 中每个 element 出现的次数)
+    - ChainMap(todo: 没用过，不理解，为什么要用这玩意)
+
+
+列表表达式
+
+
+    .. code-block:: python
+
+        [i for i in range(10) if i % 2 == 0]
+
+字典表达式
+
+
+    .. code-block:: python
+
+        squares = {number: number**2 for number in range(100)}
+
+
+集合表达式
+
+
+    .. code-block:: python
+
+        squares = {number**2 for number in range(100)}
+
+enumerate
+
+    .. code-block:: python
+
+            for i, element in enumerate(['one', 'two', 'three']):
+                print(i, element)
+
+zip
+
+    .. code-block:: python
+
+        for item in zip([1, 2, 3], [4, 5, 6]):
+            print(item)
+
+        for item in zip(*zip([1, 2, 3], [4, 5, 6])):
+            print(item)
+
+        dict(zip([1, 2, 3], [4, 5, 6]))
+        dict(zip((1, 2, 3), (4, 5, 6)))
+
+
+unpack 赋值
+
+    .. code-block::
+
+        # unpack
+        first, second, third = "foo", "bar", 100
+        first, second, *rest = 0, 1, 2, 3
+        first, *inner, last = 0, 1, 2, 3
+        (a, b), (c, d) = (1, 2), (3, 4)
+
+iterators（迭代器）
+
+    实现下面两个方法的就是 iterator:
+
+    #. \_\_next\_\_ return next item of the container.
+    #. \_\_iter\_\_ return the iterator itself.
+
+generator(生成器)
+
+    yield 用于写 generator。
+
+    generator 除了 next 和 send 常见用法外，还有
+
+        - throw 抛异常
+        - close 停止迭代
+
+
+Context managers（上下文管理器） - the with statement
+
+    只要一个类实现了
+
+        #. \_\_enter\_\_
+        #. \_\_exit\_\_
+
+    方法，这个类就是 context manager。
+
+    不过一般都是用 contextlib.contextmanager decorator 定义 context manager ，因为这样定义更简洁。
+
+    .. code-block::
+
+        from contextlib import contextmanager
+
+
+        @contextmanager
+        def f():
+            print('start')
+            try:
+                yield
+            finally:
+                print('end')
+
+    contextlib 除了最常用的 `contextmanager` decorator, 还提供了 `closing(element)`（生成 contextmanager ，离开 contextmanager 会自动执行 element.close()，可以防止你忘记执行 close()）， `supress(*exceptions)`(生成 contextmanager , 并自动吞掉 contextmanager 中出现的 exceptions)， `redirect_stdout(new_target)`（能把原本要写到 stdout 的字符串，写到 new_target(file-like object) 中），`redirect_stderr(new_target)`(和 `redirect_stdout(new_target)` 用法类似)。
+
+decorators(装饰器)
+
+    Decorators 就是在要包裹的 code 前后包装些代码去执行。
+
+    .. code-block::
+
+        @decorator(decorated_code)
+        # 上面这句等价于
+        decorated_code = decorator(decorated_code)
+
+
+    decorator 可以写成函数，可以写成类，可以带参数。
+
+
+    decorator 一般都需要保持被包装函数的 metadata, 一般使用 functions.wraps 保持函数 metadata。（decorator 可以装饰类，但是没有现成的工具保持类的 metadata。所以类的 metadata 编程还是使用 metaclass 比较方便）。
+
+
+
+Reference
+=========
+
+- Expert Python Programing
