@@ -29,6 +29,7 @@ Problem
 - 如何构建虚拟 Python 环境
 - 进入/退出虚拟 Python 环境
 - 重现 Python 环境
+- pyenv 管理多个版本的 Python 解释器
 
 
 Solution
@@ -97,6 +98,76 @@ Solution
         # 在干净的环境中，使用 requirements.txt 装包，就能还原之前的 wangmeng-python 解析器环境。
         $ pip install -r requirements.txt
 
+- pyenv 管理多个版本的 Python 解释器。
+
+    参考 https://github.com/pyenv/pyenv-installer 安装 pyenv, 在类 Unix 环境安装非常简单，在 windows 上我没有安装成功。
+
+    下载安装新版本的 Python
+
+        .. code-block:: shell
+
+            $ pyenv install 2.7.3
+            Downloading Python-2.7.3.tgz...
+            -> https://www.python.org/ftp/python/2.7.3/Python-2.7.3.tgz
+            Installing Python-2.7.3...
+            patching file ./Modules/readline.c
+            Hunk #1 succeeded at 200 (offset -6 lines).
+            Hunk #2 succeeded at 735 (offset -14 lines).
+            Hunk #3 succeeded at 845 (offset -14 lines).
+            Hunk #4 succeeded at 893 with fuzz 2 (offset -25 lines).
+            Ignoring potentially dangerous file name ../Python-2.7.3/Lib/site.py
+            patching file ./Lib/site.py
+            patching file ./Lib/ssl.py
+            Hunk #2 succeeded at 424 (offset -11 lines).
+            patching file ./Modules/_ssl.c
+            Hunk #1 succeeded at 65 (offset -2 lines).
+            Hunk #2 succeeded at 304 (offset -4 lines).
+            Hunk #3 succeeded at 1725 (offset -87 lines).
+            WARNING: The Python readline extension was not compiled. Missing the GNU readline lib?
+            WARNING: The Python bz2 extension was not compiled. Missing the bzip2 lib?
+            WARNING: The Python sqlite3 extension was not compiled. Missing the SQLite3 lib?
+            Installing pip from https://bootstrap.pypa.io/get-pip.py...
+            Installed Python-2.7.3 to /home/wangmeng/.pyenv/versions/2.7.3
+
+    查看当前系统可用的 Python 版本
+
+        .. code-block:: shell
+
+            $ pyenv versions
+            * system (set by /home/wangmeng/.pyenv/version)
+              2.7.3
+
+    在当前目录下，选择使用特定版本的 Python 解释器
+
+        .. code-block:: shell
+
+            $ pyenv local 2.7.3
+            $ pyenv versions
+              system
+            * 2.7.3 (set by /home/wangmeng/.python-version)
+
+    在全局，选择使用特定版本的 Python 解释器
+
+        .. code-block:: shell
+
+            $ pyenv global 2.7.3
+
+        .. code-block:: shell
+
+            $ pyenv shell 2.7.3
+
+    卸载 Python 解释器
+
+        .. code-block:: shell
+
+            $ pyenv uninstall 2.7.3
+            $ pyenv versions
+            * system (set by /home/wangmeng/.python-version)
+
+
 
 Reference
 =========
+
+- pyenv: https://github.com/pyenv/pyenv
+- Linux 下的 Python 多版本管理: https://my.oschina.net/lionets/blog/267469
