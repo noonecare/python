@@ -1,4 +1,6 @@
-# decorator 还可以写成 class 的形式
+# If a object implements __call__ method, this object can be a decorator.
+# specially, we can define a class which implements __call__ method, then
+# instances of this class can be decorators.
 import types
 
 
@@ -13,20 +15,21 @@ class Profiled:
         self.ncalls += 1
         return self.func(*args, **kwargs)
 
-    # 为了能够使 Profiled 类既能装饰 function, 也能装饰 method
     def __get__(self, instance, owner):
+        # function to be decorate is not a method.
         if instance is None:
             return self
         else:
-            # 为了展示 MethodType 我写了 MethodTypeShow 类
+            # function to be decorate is a method.
+            # method after decorate should also be a method.
+            # types.MethodType can bound a function to a class, thus a
+            # function becomes a method.
             return types.MethodType(self, instance)
 
 
 @Profiled
 def add(x, y):
     return x + y
-
-# 定义时，执行了 add = Profile(add)
 
 
 class Spam:

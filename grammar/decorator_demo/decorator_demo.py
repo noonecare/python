@@ -1,30 +1,6 @@
 from functools import wraps
 
 
-def decorate(func):
-    """
-    这是 decorat 函数的 docstring
-    :param func: A function 
-    :return: another function
-    """
-    def h(*args, **kwargs):
-        """
-        这是构造出来的新函数的 docstring
-        :param args: 
-        :param kwargs: 
-        :return: 
-        """
-        print("i am a decorator")
-        return func(*args, **kwargs)
-    return h
-
-
-@decorate
-def add_one(a):
-    return a + 1
-#  上面的decorator 其实是执行了 add_one = decorate(add_one)
-
-
 # 实现带参数的 decorator
 def decorate_use_parameter(greeting: str):
 
@@ -39,16 +15,6 @@ def decorate_use_parameter(greeting: str):
 @decorate_use_parameter("Hello")
 def minus_one(a):
     return a - 1
-
-
-@decorate
-def original_function(a):
-    """
-    这是 original_function 的 docstring
-    :param a:Int 
-    :return: Int
-    """
-    return a + 1
 
 
 # 这所以说bad 应为 h.__doc__ = func.__doc__ 必须在你执行一次被修饰的函数之后，才能生效。不执行被修饰的函数话，被修饰函数的
@@ -113,31 +79,6 @@ def original_function2(a):
 
 @good_decorate_and_keep_docstring
 def original_function3(a: int):
-    pass
-
-
-def standard_decorate(func):
-    # 加 wraps(func) 这一步是写 decorator 的好习惯，应当遵守这个惯例
-    @wraps(func)
-    def h(*args, **kwargs):
-        """
-        这是构造出来的新函数的 docstring
-        :param args: 
-        :param kwargs: 
-        :return: 
-        """
-        print("i am a decorator")
-        return func(*args, **kwargs)
-    return h
-
-
-@standard_decorate
-def original_function4(a: int):
-    """
-    original_function4 的 docstring
-    :param a: 
-    :return: 
-    """
     pass
 
 

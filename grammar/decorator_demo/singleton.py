@@ -5,6 +5,7 @@ class Singleton(type):
     """
     实现 Singleton Pattern, 这是从 《Python Cookbook3》 中抄的代码
     """
+
     def __init__(self, *args, **kwargs):
         self.__instance = None
         super().__init__(*args, **kwargs)
@@ -27,6 +28,7 @@ class Singleton(type):
 class Spam(metaclass=Singleton):
     def __init__(self):
         print("Creating Spam")
+
 
 # 我画这条分割线，就是为了证明， Singleton 的 __call__ 默认是调用 Singleton.__new__; Spam.__init__; 当然这里 Singleton
 # override 了 __call__ method, 所以行为不同了

@@ -35,14 +35,14 @@ Solution
 
 coverage 可以统计代码覆盖率。coverage 常见用法就下面三句，非常简单。
 
-.. code-block::
+.. code-block:: shell
 
     # 使用 pytest 测试 test/test*.py，统计代码的覆盖率。
     $ coverage run -m pytest --source test/test*.py
 
 执行上面一句之后，会生成 .coverage 文件。.coverage 文件用于生成关于代码覆盖率的报告。最常用的是生成表格形式的代码覆盖率报告和 html 形式的代码覆盖率报告。
 
-.. code-block::
+.. code-block:: shell
 
     # 生成表格形式的代码覆盖率报告
     $ coverage report
