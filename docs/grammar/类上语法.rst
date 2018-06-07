@@ -26,9 +26,16 @@ Problem
 
 - super 函数
 - descriptor
+- property
+- classmethod
+- abstractmethod
 - meta programming
+
     - decorator
     - metaclass
+
+- Mixin
+
 
 
 Solution
@@ -250,6 +257,17 @@ metaclass 常见的应用
 
 
     metaclass 用的比较少。见过的也就是 Django ORM 用过。使用 metaclass 请慎重，多想想有没有更简单的方法。
+
+
+
+interface
+
+
+    可以使用 zope.interface 中的 Interface, implements 定义接口。虽然 zope 已经风光不再，但是 zope.interface 仍然常用。静态语言能在编译时，警告你要实现 Interface 中的方法，Python 是动态语言，需要写测试用例，运行测试用例时，会提示你实现Interface 中的方法。
+
+    使用 abc 包中的 abstractmethod 也可以定义接口。
+
+    重写 **__subhook__** 方法，可以定义 isinstance 行为。
 
 
 
