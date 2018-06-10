@@ -56,9 +56,9 @@ pytest, docker, monkeypatch
     我一般是这样做测试，还是举刚才的例子。我的代码要用 requests.get 访问 Elasticsearch 。那么我：
 
         #. 开始时，使用 Docker 做测试。
-        #. 给出测试用例的输入，调试程序时，捕获 requests.get 对于每个输入的输出值（收集输出值和输出值，构造函数 f）。
+        #. 给出测试用例的输入，调试程序时，捕获 requests.get 对于每个输入的输出值（收集输入值和输出值，构造函数 f）。
         #. 调用 monkeypath 设置 reqeusts 的 get 属性值为上一步构造出的函数 f。
-        #. 上一步中 f 的输出值是 `Response` 类，这个类的实例可能不容易构造。在这种情况下可以使用 `MagicMock` 类伪装出 `Response` 类的实例。
+        #. 上一步中 f 的输出值是 `Response` 类，这个类的实例不容易构造。在这种情况下可以使用 `MagicMock` 类伪装出 `Response` 类的实例。
         #. 到这一步，就完成了使用 mock 的资源做测试的测试用例。从此不必再启动 Docker Elasticsearch 服务做测试（抛弃之前使用 Docker的方法），测试完全自动化。
 
 参考文献
