@@ -1,0 +1,73 @@
+===========
+概览
+===========
+
+:Author: 王蒙
+:Tags: Django，apps
+
+:abstract:
+
+    Django 如此强大，源于Django 有丰富的 apps 可用。很多网站开发中需要的功能，Django 有现成 apps 提供。本节介绍这些 app 的通用特点，方便上手这些插件。
+
+.. contents::
+
+Audience
+========
+
+Python 网站开发
+
+Prerequisites
+=============
+
+Django
+
+
+Problem
+=======
+
+
+
+Solution
+========
+
+Django 有丰富的插件，比如 rest_framework, auth_framework, django-brace, django-guardian，django-message 等等。
+
+这些插件，提供了现成的 view, template, models，minxin, template tag 供用户使用。
+
+使用这些插件，首先需要配置 settings.py 文件。
+
+- INSTALLED_APPS 中添上相关的插件。
+- 除此之外，也可能需要添加其他的配置，比如 MIDDLEWARE 以及 apps 自定义的 BACKEND 配置。
+
+使用这些插件，还需要配置 urlpattern。
+
+- 如果是拿来即用，一般 apps 提供了一套 urlpattern 规则，直接使用 include() 函数，给 apps 定义的 urlpattern 添加个前缀就 ok。比如：
+
+    .. code-block::
+
+        url(r'^admin/', admin.site.urls)
+
+- 更细化的，可能你只需要 apps 提供的几个 view, 不需要整体都拿过来。这时候，就引用该 view，定义该 view 的 urlpattern 即可。这种方式，一般需要你对 apps 有了解，知道 apps 中有哪些 view, 一般需要读文档或者源码。
+
+- 可能 apps 提供的 view 不能完全满足你的需求，你需要重写该 view。这时候需要详细阅读文档或者源码。
+
+- apps 提供的 view 一般都有两个版本，函数版本和类版本。类版本更方便定制（很多时候定制，就是设置的属性值，少数时候，需要重写方法）。为了组合功能，很多 apps 提供的不是 View 类，而是 Mixin 类。
+
+
+使用第三方插件时，经常需要自定义 template，在写 template 时，经常不知道第三方 apps 提供的 context 是什么样的，也不知道应该把 template 放到哪个目录下。
+
+- 什么都不定义，直接运行代码，程序会报告在某某路径找不到 html 文件。这时候，就可以确定，第三方 apps 的默认 template 是保存在哪个路径下。就知道要在哪个目录下写 template 文件。
+
+- 当前 Django 模板一定支持，你输入 request, 因为 render 方法的第一个参数是 request。但是其他的 context, 就各不相同的。todo: 怎样用 Pycharm 调试模板
+
+- 查文档，一般文档有个示例代码。该示例代码会把 template 放到 template 刚放的地址，示例代码的 template 中的参数，就是第三方 apps 提供的 context。
+
+
+有时候，需要自定义 Model。
+
+
+
+Reference
+=========
+
+Put here references, and links to other documents.
