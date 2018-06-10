@@ -61,9 +61,13 @@ pytest, docker, monkeypatch
         #. 上一步中 f 的输出值是 `Response` 类，这个类的实例不容易构造。在这种情况下可以使用 `MagicMock` 类伪装出 `Response` 类的实例。
         #. 到这一步，就完成了使用 mock 的资源做测试的测试用例。从此不必再启动 Docker Elasticsearch 服务做测试（抛弃之前使用 Docker的方法），测试完全自动化。
 
+
+    补充一句，很多 CI 工具（比如 Jenkins）`对于 Docker 提供了支持`_ 。所以如果你确信一定只会使用 CI agent 做测试，那么测试也是能够自动执行的（就算使用了 Docker）。
+
 参考文献
 =========
 
 .. _pytest monkeypatch: https://docs.pytest.org/en/latest/monkeypatch.html?highlight=patch
 .. _unittest.mock: https://docs.python.org/3/library/unittest.mock-examples.html?highlight=mock
 .. _Docker.hub: http://dockerhub.com/
+.. _对于 Docker 提供了支持: https://jenkins.io/doc/book/pipeline/docker/
