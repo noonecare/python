@@ -2,45 +2,70 @@
 持续集成
 ===========
 
-:Author: 王蒙
-:Tags: document tags separated with spaces
+:作者: 王蒙
+:标签: 持续集成，CI, Travis, Jenkins
 
-:abstract:
+:简介:
 
-
-
-        write here a small abstract about your design document.
+    介绍为什么做持续集成，持续集成集成的工具。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
-Explain here who is the target readership.
+Python 开发
 
-Prerequisites
+
+预备知识
 =============
 
-Write the list of prerequisites for implementing this recipe.  This
-can be additional documents, software, specific libraries, environment
-settings or just anything that is required beyond the obvious language
-interpreter.
+版本管理，测试
 
-
-Problem
+问题
 =======
 
-Explain the problem that this recipe is trying to solve.
+
+- 为什么要做持续集成
+- 怎么做持续集成
+
+    - Travis
+    - Jenkins
+    - Teamcity
+
+解决办法
+===========
+
+为什么要做持续集成
+
+    软件工程中共性的问题：版本控制，测试，部署。 持续集成指的是自动化的机制使得团队中每个人的分支可以安全地（一般是通过尽可能多的测试来保证安全）合并到 develop, master分支。
+
+怎么做持续集成
+
+    总体来说，持续集成：
+        - 提供现成的执行环境（一般称为 Agent）。
+        - 用户配置触发规则，让版本控制系统（比如 git） 的操作（一般是 push 和 merge request）能触发脚本在执行环境中执行。
+        - 具体触发什么操作，可能需要开发者定义，一般是 Build（构建代码）, Test（测试）, Deploy（打包发布到 repository 中）。
+
+持续集成工具
+
+    - `Travis`_ ： 开源项目一般采用 Travis 做持续集成，因为有免费的 `Travis`_ 持续集成服务可用，其他比如 Jenkins，Teamcity 都需要自己搭持续集成的服务。
+
+    - Jenkins：
+
+        - 写 `Jenkinsfile`_ 。
+        - 在 Jenkins 页面，配置 Pipeline, 指明使用 Jenkinsfile, 指明 Trigger 机制。
+        - 配置 gitlab/github 的 Webhook, settings -> Merge request settings 配置。
+
+    - Teamcity: 对于 Teamcity ，我就在 youtube 上看过 9 个视频，知之甚少。
+
+        - https://www.youtube.com/watch?v=HaBRWWuR47Q
 
 
-Solution
-========
-
-Give solution to problem explained earlier.  This is the core of a
-recipe.
-
-
-Reference
+参考文献
 =========
 
-Put here references, and links to other documents.
+- 持续集成是什么： http://www.ruanyifeng.com/blog/2015/09/continuous-integration.html
+
+.. _Jenkinsfile: https://jenkins.io/doc/book/pipeline/jenkinsfile/
+.. _Travis: https://www.travis-ci.org/
