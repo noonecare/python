@@ -2,26 +2,26 @@
 linux 包管理工具
 ===================
 
-:Author: 王蒙
-:Tags: linux, DevOps, Docker, Vagrant, yum, apt-get
+:作者: 王蒙
+:标签: linux, DevOps, Docker, Vagrant, yum, apt-get
 
-:abstract:
+:简介:
 
     介绍 linux 上的 yum 和 apt-get 装包工具。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 DevOps
 
-Prerequisites
+准备知识
 =============
 
 简单的 bash 命令，Docker
 
-Problem
+问题
 =======
 
 - 安装源
@@ -29,7 +29,7 @@ Problem
 - 在 Docker 如何使用
 
 
-Solution
+解决办法
 ========
 
 - 安装源
@@ -87,7 +87,7 @@ Solution
 
 
 
-Reference
+参考文献
 =========
 
 - 把 yum 源改成是国内源: https://blog.csdn.net/inslow/article/details/54177191

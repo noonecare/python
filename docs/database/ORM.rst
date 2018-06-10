@@ -2,32 +2,32 @@
 ORM
 ===========
 
-:Author: 王蒙
-:Tags: 网络开发，数据库，ORM
+:作者: 王蒙
+:标签: 网络开发，数据库，ORM
 
-:abstract:
+:简介:
 
     介绍 Python 以 ORM 操作数据库的方式。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发
 
-Prerequisites
+预备知识
 =============
 
 数据库基本操作
 
-Problem
+问题
 =======
 
 - SQLAlchemy
 - Django ORM
 
-Solution
+解决办法
 ========
 
 
@@ -147,7 +147,7 @@ Transaction
 todo: 看完 https://github.com/oreillymedia/essential-sqlalchemy-2e 的代码。
 
 
-Reference
+参考文献
 =========
 
 - PEP 249: https://www.python.org/dev/peps/pep-0249/

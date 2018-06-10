@@ -35,9 +35,12 @@ Python 学习资源：
    readability/index.rst
    test/index.rst
    networks/index.rst
+   socket/index.rst
    IPTCP/index.rst
    dev_deploy/index.rst
    database/index.rst
+   grammar/index.rst
+   pycharm/index.rst
 
 
 .. _flask: https://github.com/pallets/flask

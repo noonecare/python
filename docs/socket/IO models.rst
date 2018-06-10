@@ -35,7 +35,7 @@ Solution
 
 - IO 模型有哪些，它们有什么区别和联系？
 
-    socket IO 分为两步： A. 等待数据；B. 把数据从内核去拷贝到用户区。IO 模型有以下五种：
+    socket IO 分为两步： A. 等待数据；B. 把数据从内核区拷贝到用户区。IO 模型有以下五种：
 
 
         - blocking IO：socket 的读写操作默认是 blocking IO。socket 读写操作需要等 A，B 两步都完成，读写操作才会返回。
@@ -43,7 +43,7 @@ Solution
             - A 步骤没有完成， 立即返回。
             - A 步骤完成了，立即执行 B 步骤。
 
-        - IO multiplexing: select 返回 ready 的 socket（如果没有一个 ready 就会阻塞，具体看下面的 select 函数介绍），用户一般会对 ready 的 sockets 进行 B 步骤。
+        - IO multiplexing: select 返回 ready 的 socket（如果没有一个 ready 就可能会阻塞，具体看下面的 select 函数介绍），用户一般会对 ready 的 sockets 进行 B 步骤。
 
         - signal-driven IO: A 步骤完成的时，产生信号。信号触发信号处理函数，信号处理函数一般是执行 B 步骤。
 
@@ -90,7 +90,7 @@ Solution
 - select/poll/epoll 为什么有好的性能？
 
 
-    - select/poll/epoll 高效地返回已经ready的文件描述符，对这些文件描述符可以直接执行B步骤。
+    - select/poll/epoll 高效返回已经ready的文件描述符，对这些文件描述符可以直接执行B步骤。
 
         There are three possibilities:
             #. Wait forever— Return only when one of the specified descriptors is ready for I/O. For this, we specify the timeout argument as a null pointer.

@@ -1,8 +1,8 @@
-Welcome to wangmeng-python's documentation!
+Python 语法
 ===========================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    类下语法

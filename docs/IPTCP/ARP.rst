@@ -68,7 +68,7 @@ ARP 告诉缓存？
 
     ARP IP 地址和硬件地址的对应表会被缓存一段时间，以提高效率。 arp -a 显示缓存的对应表。
 
-    .. code-block::
+    .. code-block:: shell
 
         % arp -a
         sun (140.252.13.33) at 8:0:20:3:f6:42

@@ -11,7 +11,7 @@ Python 开发需要提供项目级的独立包依赖环境，或者是系统级�
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    虚拟解释器环境
