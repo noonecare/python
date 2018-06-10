@@ -14,10 +14,10 @@
    :caption: Contents:
 
    需要做哪些测试
-   单元测试工具
+   单元测试
    项目构建工具
    代码覆盖率
-   Mock 测试环境 or Docker 虚拟测试环境
+   Mock or Docker
    持续集成
 
 
