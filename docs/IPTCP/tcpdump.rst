@@ -34,7 +34,7 @@ Problem
 Solution
 ========
 
-.. code-block::
+.. code-block:: shell
 
     # tcpdump 需要 sudo 权限，所有之后的脚本都会带上 sudo
     # 查看所有网络接口, any 接口表示所有接口

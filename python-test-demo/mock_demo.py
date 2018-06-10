@@ -1,17 +1,16 @@
+"""
+    patch 要比 Mock 简单，常用
+    但是 patch 是通过调用 Mock 实现的
+    所以对于 Mock ， 心中应该有个概念
+
+    Mock 是一个可以伪装成任何类的类
+    对于 Mock 类, 你可以任意指定它的 attribute。
+    特别的，指定 spec 参数（值为一个类），就会为 Mock 类赋予该类所有的 attribute。
+    这样从外部看（这个类的使用者），这个 Mock 和 spec 值表示的类是完全相同的。当然从内部看 Mock 类的行为一般要比 spec 指明的类简单的多。
+"""
+
 from cmath import sqrt
 from unittest.mock import Mock
-
-
-"""
-patch 要比 Mock 简单，常用
-但是 patch 是通过调用 Mock 实现的
-所以对于 Mock ， 心中应该有个概念
-
-Mock 是一个可以伪装成任何类的类
-对于 Mock 类, 你可以任意指定它的 attribute。
-特别的，指定 spec 参数（值为一个类），就会为 Mock 类赋予该类所有的 attribute。
-这样从外部看（这个类的使用者），这个 Mock 和 spec 值表示的类是完全相同的。当然从内部看 Mock 类的行为一般要比 spec 指明的类简单的多。
-"""
 
 
 # 表示一个复数
@@ -78,7 +77,6 @@ def test_calculate_f():
     expected_inverse = [Complex(0, 0), Complex(1, 0), Complex(0, -1)]
     for i in range(len(expected_inverse)):
         assert calculate_inverse(fake_complex()) == expected_inverse[i]
-
 
 # 上面的例子演示了最常用的例子，就是用具体几个点的值，验证全局的正确性
 # 想象这样一个场景，你和你的开发伙伴（记为 A）分别开发两个 module, 其中你的 module 要引用 A 开发的 module（记为 P）。

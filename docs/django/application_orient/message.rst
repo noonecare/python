@@ -62,3 +62,4 @@ Reference
 =========
 
 - Django By Example
+- contrib package: https://docs.djangoproject.com/en/1.11/ref/contrib/

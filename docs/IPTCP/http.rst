@@ -15,7 +15,7 @@
 
         Fiddler 能不能解码 tunnel 中走其他协议的 TCP 消息，尚未可知。
 
-        .. code-block::
+        .. code-block:: shell
 
             HTTP/1.1 200 Connection Established
             FiddlerGateway: Direct

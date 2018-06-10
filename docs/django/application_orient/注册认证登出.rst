@@ -1,0 +1,42 @@
+===============
+注册认证登出
+===============
+
+:Author: 王蒙
+:Tags: Django, authenticate, login, logout, oauth2
+
+:abstract:
+
+    介绍 Django 认证，登录，登出的用法。
+
+.. contents::
+
+Audience
+========
+
+Python 网站开发
+
+Prerequisites
+=============
+
+Problem
+=======
+
+- Django 自带的认证机制
+- 自定义用户
+- 自定义认证
+- 自定义权限
+
+Solution
+========
+
+
+
+
+
+
+Reference
+=========
+
+- 自定义认证： https://docs.djangoproject.com/en/2.0/topics/auth/customizing/
+-

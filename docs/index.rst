@@ -34,7 +34,7 @@ Python 学习资源：
 
    readability/index.rst
    test/index.rst
-   networks/index.rst
+   web_app/index.rst
    socket/index.rst
    IPTCP/index.rst
    dev_deploy/index.rst

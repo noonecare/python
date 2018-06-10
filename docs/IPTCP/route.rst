@@ -32,7 +32,7 @@ IP 如何根据路由表路由？
 Solution
 ========
 
-.. code-block::
+.. code-block:: shell
 
     vagrant@precise64:~$ route
     Kernel IP routing table
