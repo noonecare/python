@@ -2,39 +2,134 @@
 项目构建工具
 ===============
 
-:Author: 王蒙
-:Tags: Python 开发， 测试，构建工具，CI
+:作者: 王蒙
+:标签: Python 开发，测试，构建工具，CI，自动化
 
-:abstract:
+:简介:
 
-    Python 项目构建工具有： Buildout 和 tox。本节主要介绍 tox 。
+    Python 项目构建工具有： Buildout 和 tox。这里主要介绍 tox 。
 
 .. contents::
 
-Audience
-========
+目标读者
+===========
 
 Python 开发
 
-Prerequisites
+预备知识
 =============
 
-tox
 
-Problem
+问题
 =======
 
-Explain the problem that this recipe is trying to solve.
+- 怎样一键执行所有的测试
 
 
-Solution
-========
+解决办法
+==========
 
-Give solution to problem explained earlier.  This is the core of a
-recipe.
+开发过程中要不断的执行测试用例，特别是要添加新功能的时候，要执行测试用例确保之前的功能还 ok。
 
+不同的开发者在不同的机器上开发，要确保开发环境的一致（部署代码时，也要保证部署环境和开发环境一致），所以几乎一定要构建项目级的虚拟开发环境。
+
+Python 项目构建工具 tox 满足了要求，它根据配置自动生成虚拟开发环境（保证运行环境统一），又能根据配置批量地自动化地执行测试。
+
+实际使用 tox 时，就是在项目根目录运行 `tox` ，然后 tox 会根据 tox.ini 配置文件的内容，执行所有的工作。如果不报错，说明大功告成；如果出错，说明代码还不完善。
+
+主要的工作，就是写 tox.ini 文件。
+
+tox.ini 最基本用法是：
+
+    .. code-block:: shell
+
+        # content of: tox.ini , put in same dir as setup.py
+        [tox]
+        envlist = py27,py36
+
+        [testenv]
+        deps=pytest
+        commands=
+            pip install -e .
+            pytest
+
+
+envlist 指明 Python 解释器版本， deps 指明测试需要的依赖， commands 指明要执行的命令，这里 pytest 表示执行当前目录下的所有测试。
+
+
+除了执行测试之外，一般还会加上统计代码覆盖率，生成 sphinx 文档等等的命令。我写 tox.ini 一般会参考 `flask 源码`_ 中的 tox.ini 写。
+
+示例 tox.ini 中的 envlist 为 py27,py36。这表示 tox 会分别使用 py27 和 py36 Python 解释器测试代码。
+
+.. code-block:: shell
+
+    [tox]
+    envlist =
+        ; py26 support was dropped in django1.7
+        py26-django{15,16},
+        ; py27 still has the widest django support
+        py27-django{15,16,17,18,19},
+        ; py32, py33 support was officially introduced in django1.5
+        ; py32, py33 support was dropped in django1.9
+        py32-django{15,16,17,18},
+        py33-django{15,16,17,18},
+        ; py34 support was officially introduced in django1.7
+        py34-django{17,18,19},
+        ; py35 support was officially introduced in django1.8
+        py35-django{18,19}
+
+    [testenv]
+    deps =
+        django{15,16}:south
+        django{15,16}:django-guardian<1.4.0
+        django15: django==1.5.12
+        django16: django==1.6.11
+        django17: django==1.7.11
+        django18: django==1.8.7
+        django19: django==1.9
+        coverage: django==1.9
+        coverage: coverage==4.0.3
+        coverage: coveralls==1.1
+        pytest
+
+    basepython =
+        py35: python3.5
+        py34: python3.4
+        py33: python3.3
+        py32: python3.2
+        py27: python2.7
+        py26: python2.6
+
+    commands = pytest
+
+    [testenv:devenv]
+    envdir = devenv
+    basepython = python2.7
+    usedevelop = True
+
+
+
+
+上面这份代码展示了展示了如下配置：
+
+    - basepython: 指明了 py35, py33 等等分别对应哪个版本的 Python。
+    - envlist 中的 py33-django{15,16,17,18} 写法叫做 `dependency matrix`_ , 这样能够组合出多种环境做测试。
+    - basepython 中的 py35: python3.5 和 django15: django==1.5.12 称为 `factor`_ 。使用 factor 给出的依赖，在 envlist 中不同的测试环境中引进不同的依赖（根据 dependency matrix 决定）。而不使用 factor 的依赖（比如上面 tox.ini 文件中的 pytest ）在每个测试环境中都会引入。
+    - [testenv:devenv] 配置名为 `devenv`_ 的环境。这样配置的环境，通常是为了单独执行（`tox -e devenv`）：比如部署，构建开发环境，生成文档等等。我之前一直以为这样定义的 devenv 会继承之前的 testenv 配置，现在想想自己笨死了。
+
+
+
+`Buildout`_ 也是 Python 中很火的项目构建工具，有空可以了解下。
 
 Reference
 =========
 
-Put here references, and links to other documents.
+- tox: https://tox.readthedocs.io/en/latest/examples.html
+- tox 源码: https://github.com/tox-dev/tox
+
+
+.. _flask 源码: https://github.com/pallets/flask/blob/master/tox.ini
+.. _dependency matrix: https://tox.readthedocs.io/en/latest/example/basic.html#compressing-dependency-matrix
+.. _factor: https://tox.readthedocs.io/en/latest/config.html#factors
+.. _devenv: https://tox.readthedocs.io/en/latest/example/devenv.html
+.. _Buildout: https://github.com/buildout/buildout
