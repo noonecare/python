@@ -75,8 +75,8 @@ Python 测试框架有哪些
         - 作为函数参数使用
         - pytest.mark.usefixtures
         - pytest.mark.parametrize
-        - scope 参数，在 function/module/session 级使用 fixtures
         - 自动使用 fixture
+        - `pytest.ini` 配置文件
 
     fixture 的定义：
         - pytest.fixture
