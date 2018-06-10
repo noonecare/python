@@ -6,14 +6,26 @@
 Welcome to wangmeng-python's documentation!
 ===========================================
 
-Python 的应用
 
-follow 的网站：
+Python 学习资源：
 
-- https://segmentfault.com/t/segmentfault-%E6%8A%80%E6%9C%AF%E5%91%A8%E5%88%8A/blogs
-- https://segmentfault.com/a/1190000010382755
-- https://github.com/vinta/awesome-python
-- `flask`_
+   - `awesome-python`_ : 总结了 Python 中广泛使用的类库，论坛等等。
+   - `pep 文档`_ : 包括了 Python 的重要更新，编程标准等。
+   - `python`_ : python 官方网站，偶尔会去上面看看标准库的文档。
+   - `pypi 源`_ : python package index。
+
+
+刷题平台：
+
+   - `hihocoder`_
+   - `leetcode`_
+
+优秀源码：
+
+   关注 Github 上有名的 Python 项目。
+
+   - `flask`_
+
 
 
 .. toctree::
@@ -28,13 +40,12 @@ follow 的网站：
    database/index.rst
 
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-
 .. _flask: https://github.com/pallets/flask
+.. _segmentfault: https://segmentfault.com/t/segmentfault-%E6%8A%80%E6%9C%AF%E5%91%A8%E5%88%8A/blogs
+.. _awesome-python: https://github.com/vinta/awesome-python
+.. _CTOLib: https://www.ctolib.com/
+.. _leetcode: https://leetcode-cn.com
+.. _hihocoder: http://hihocoder.com/contests/past
+.. _pep 文档: https://www.python.org/dev/peps/
+.. _stackoverflow: https://stackoverflow.com/
+.. _pypi 源: https://pypi.org/

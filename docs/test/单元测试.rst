@@ -1,0 +1,162 @@
+================
+单元测试
+================
+
+:作者: 王蒙
+:标签: 单元测试, unittest, pytest, nosetest
+
+:简介:
+
+    主要介绍 pytest 。
+
+.. contents::
+
+目标读者
+==========
+
+Python 开发
+
+预备知识
+=============
+
+Python 基础语法
+
+问题
+=======
+
+- Python 测试框架有哪些
+
+- assert 断言
+
+- test fixture（测试固件）
+
+- Doctest
+
+- run & debug
+
+解决办法
+==========
+
+Python 测试框架有哪些
+
+    `pytest`_ 是 Python 中最好用的单元测试框架，除此之外我时不时会用 `unittest`_ 中的 MagicMock 对象去模拟外部资源。
+
+    有些第三方框架（Framework）自带了单元测试工具，在这些框架中使用自带的单元测试工具会比较方便。比如：
+
+
+        - tornado: `tornado.testing`_ 提供的 `AsyncTestCase` 和 `AsyncHTTPTestCase` 能方便的测试 tornado 启动的服务，不用 tornado 自带的工具的话，需要自己去异步运行 tornado 服务，关闭 tornado 服务会很麻烦。
+        - Django: 使用 Django 自带的工具 `测试 view`_ ，就好像测试的时候 Django 服务自动启动了，测试完 Django 服务自动关闭了。
+
+    下面的论述主要点出写 pytest 要注意的点。主要针对 pytest ,但是这些点在其他测试框架（比如 nosetest 和 unittest）中，一样要注意。
+
+
+`assert 断言`_
+
+    断言相等 `assert a == b`
+
+    断言会出现异常: `pytest.raises`
+
+    断言会出现警告: `pytest.warnings`
+
+    pytest 对于不同类型的数据有不同的断言失败消息，方便调试
+
+    自定义断言失败消息: 重写 pytest_assertrepr_compare(config, op, left, right) 自定义断言失败消息
+
+`test fixture`_
+
+    寻找 fixture：
+
+        - fixtures 不需要引入， pytest 按照类内，module 内，conftest.py 内，最后内建或第三库的范围寻找并引入 fixture。
+
+        - 多个 test 文件都需要使用的 fixture， 写入到 **conftest.py** 文件中。
+
+    fixture 的使用：
+
+        - 作为函数参数使用
+        - pytest.mark.usefixtures
+        - pytest.mark.parametrize
+        - scope 参数，在 function/module/session 级使用 fixtures
+        - 自动使用 fixture
+
+    fixture 的定义：
+        - pytest.fixture
+        - 使用 yield 实现 setup/teardown 效果。使用 addfinalizer 实现 setup/teardown 效果。
+        - fixture scope: function/class/module/session 。
+        - fixture 可以在一个 fixture 中调用另外一个 fixture。
+        - `fixture 如何获得 test context`_ 。
+        - 参数化 fixtures 。
+
+    monkeypatch fixture：
+
+        使用很广的一个 test fixture, 提供方法（比如 `setattr`）修改 Python 对象（的定义）。
+
+        使用 monkeypatch fixture 的单元测试运行结束，monkeypath 对于 Python 对象所做的修改自动撤销。
+
+`Doctest`_
+
+    以文档（文本的方式）写 Doctest。比如：
+
+    >>> a = 1
+    >>> b = 2
+    >>> a + b
+    3
+
+    上述文本就是一段 Doctest 测试用例。这段文本可以出现在任何文本文件（不管是.py, .c, .rst, .md 等等都可以）中，做测试时，执行如下语句：
+
+    .. code-block:: shell
+
+        pytest --doctest-glob='单元测试.rst'
+
+    pytest 就会执行以 >>> 开头的三句代码。对于最后一句代码，pytest 会判断 `repr(a + b)` 是否等于 3（最后一句相当于是 assert 断言），如果等于测试通过，否则测试不通过。
+
+
+- run & debug
+
+    test discovery
+
+        函数名以 `test` 开头，pytest 认为该函数是测试。
+        模块名以 `test` 开头，pytest 认为该模块是测试模块。
+        目录名以 `test` 开头，pytest 认为该目录是测试目录。
+
+        pytest 会寻找指定目录/模块/函数中的测试，执行这些测试。
+
+        比如：
+
+            执行当前目录下的所有测试（有测试执行测试；有测试目录，进入测试目录中找测试执行；有测试模块，进去测试模块中找测试执行）。
+
+            .. code-block:: shell
+
+                pytest .
+
+            会执行 test_a.py 模块中的所有测试。
+
+            .. code-block:: shell
+
+                pytest test_a.py
+
+    debug
+
+        `pdb`_ 是 Python 自带的命令行调试工具。我看过一个 pdb 的视频，但是从没有用过。
+
+        调试的话，明显是使用 Pycharm 的图形化界面的 Debugger 好。
+
+        介绍 Pycharm 的章节会专门介绍 Pycharm Debugger 所以留到哪里再说吧。
+
+        这里想说的是，先写好测试用例，然后 debug 该测试用例，然后编程实现，就变成了交互式的行为（对于某些繁琐的细节问题，可以试出代码）。
+
+
+参考文献
+=========
+
+- The writing and reporting of assertions in tests: https://docs.pytest.org/en/latest/assert.html#assert
+- Testing in Django: https://docs.djangoproject.com/en/2.0/topics/testing/
+
+.. _pdb: https://docs.python.org/3.6/library/pdb.html
+.. _pytest: https://docs.pytest.org/en/latest/
+.. _tornado.testing: http://www.tornadoweb.org/en/stable/testing.html
+.. _测试 view: http://django-testing-docs.readthedocs.io/en/latest/views.html
+.. _assert 断言: https://docs.pytest.org/en/latest/assert.html#assert
+.. _test fixture: https://docs.pytest.org/en/latest/fixture.html#fixture
+.. _Doctest: https://docs.pytest.org/en/latest/doctest.html
+.. _unittest: https://docs.python.org/3.6/library/unittest.html
+.. _fixture 如何获得 test context: https://docs.pytest.org/en/latest/fixture.html#fixtures-can-introspect-the-requesting-test-context
