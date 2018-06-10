@@ -1,0 +1,91 @@
+================
+需要做哪些测试
+================
+
+:作者: 王蒙
+:标签: 测试，分工
+
+:简介:
+
+    开发过程中需要做哪些测试，测试工作如何分工。
+
+.. contents::
+
+目标读者
+==========
+
+技术经理
+
+预备知识
+=============
+
+
+问题
+=======
+
+- 要做哪些测试，每种测试由什么特点，每种测试由谁来执行
+
+- 敏捷开发
+
+    - TDD
+    - BDD
+
+Solution
+========
+
+软件开发要做哪些测试：
+
+   - Acceptance test（验收测试）
+
+       把软件当做黑盒做测试，确保软件实现了当初设计的功能。这部分测试，不是由开发者做的，是由 QA staff 或者客户去做的。
+
+   - Unit test（单元测试）
+
+       针对类函数功能的测试，单元测试由开发人员来写，是 TDD(Test Driven Development, 测试驱动开发) 的基础。
+
+   - Functional test
+
+       重点测试整体的功能而不是每个代码单元。和 acceptance test 的不同在于 acceptance tests 完全是使用用户接口做测试。Functional tests 可以不必从用户接口做测试。比如测试 HTTP 服务时，使用浏览器访问（模拟用户的使用）就是 acceptance tests。使用 Postman 直接整 HTTP 请求去测试，就是 Functional tests。
+
+   - Integration test（集成测试）
+
+       重点测试不同软件部件之间是否如预期的那样交互。
+
+   - Load and performance testing（性能测试）
+
+       performance testing 很难，不同机器之间 CPU ，Memory 和 IO 性能不同会影响程序的性能。就算是同一台机器 CPU, Memory 和 IO 性能也不是一层不变的。
+
+   - Code quality testing（代码质量测试）
+
+       - PEP8 规范
+       - Complexity metrics（复杂度）
+       - 代码覆盖率
+       - 编译时 warning 的数量
+       - 文档是否够全
+
+开发者主要做的是 **Unit test（单元测试）** 。
+
+敏捷开发：为了应对快速变化的需求，敏捷开发的方法大行其道（软件工程方法论是众说纷纭，很有争议的）。在敏捷开发中 TDD 和 BDD 是被广泛认可的两种方法。
+
+    TDD：先写（单元）测试用例，再写实现。保证所有函数都有测试用例。（实际开发中，100% 覆盖所有代码的测试还是几乎没有）
+
+
+    BDD：BDD 和 TDD 的不同在于，BDD 的测试用例接近于自然语言，理想情况下是由产品经理写测试用例的。当前几乎所有语言都有 BDD 的测试框架，Python 中 BDD 测试框架有：
+
+        - `behave`_
+        - `Lettuce`_
+
+    对于 Python BDD 我所知甚少。
+
+测试过程中很用到很多 `工具`_ 。
+
+参考文献
+=========
+
+- 敏捷开发宣言： http://agilemanifesto.org/iso/zhchs/principles.html
+- 人月神话
+- BDD Testing Framework: https://www.jetbrains.com/help/pycharm/bdd-frameworks.html#run-feature-file
+
+.. _工具: https://wiki.python.org/moin/PythonTestingToolsTaxonomy
+.. _behave: https://github.com/behave/behave
+.. _Lettuce: https://github.com/gabrielfalcao/lettuce
