@@ -43,7 +43,6 @@ Python 测试框架有哪些
 
     有些第三方框架（Framework）自带了单元测试工具，在这些框架中使用自带的单元测试工具会比较方便。比如：
 
-
         - tornado: `tornado.testing`_ 提供的 `AsyncTestCase` 和 `AsyncHTTPTestCase` 能方便的测试 tornado 启动的服务，不用 tornado 自带的工具的话，需要自己去异步运行 tornado 服务，关闭 tornado 服务会很麻烦。
         - Django: 使用 Django 自带的工具 `测试 view`_ ，就好像测试的时候 Django 服务自动启动了，测试完 Django 服务自动关闭了。
 
@@ -72,7 +71,7 @@ Python 测试框架有哪些
 
     fixture 的使用：
 
-        - 作为函数参数使用
+        - `作为函数参数使用`_
         - pytest.mark.usefixtures
         - pytest.mark.parametrize
         - 自动使用 fixture
@@ -86,7 +85,7 @@ Python 测试框架有哪些
         - `fixture 如何获得 test context`_ 。
         - 参数化 fixtures 。
 
-    monkeypatch fixture：
+     `monkeypatch fixture`_ ：
 
         使用很广的一个 test fixture, 提供方法（比如 `setattr`）修改 Python 对象（的定义）。
 
@@ -142,7 +141,7 @@ Python 测试框架有哪些
 
         介绍 Pycharm 的章节会专门介绍 Pycharm Debugger 所以留到哪里再说吧。
 
-        这里想说的是，先写好测试用例，然后 debug 该测试用例，然后编程实现，就变成了交互式的行为（对于某些繁琐的细节问题，可以试出代码）。
+        这里想说的是，先写好测试用例，然后 debug 该测试用例，边debug 边实现，编程就变成了交互式的行为（对于某些繁琐的细节问题，这样做可以试出代码）。
 
 
 参考文献
@@ -160,3 +159,5 @@ Python 测试框架有哪些
 .. _Doctest: https://docs.pytest.org/en/latest/doctest.html
 .. _unittest: https://docs.python.org/3.6/library/unittest.html
 .. _fixture 如何获得 test context: https://docs.pytest.org/en/latest/fixture.html#fixtures-can-introspect-the-requesting-test-context
+.. _monkeypatch fixture: https://docs.pytest.org/en/latest/monkeypatch.html
+.. _作为函数参数使用: https://docs.pytest.org/en/latest/fixture.html#fixtures-as-function-arguments
