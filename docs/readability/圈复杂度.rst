@@ -7,7 +7,7 @@
 
 :abstract:
 
-    圈复杂度是代码的重要指标，一般圈复杂度高的代码，可读性更差，代码更容易出错。
+    圈复杂度是代码的重要指标。圈复杂度高的代码，可读性更差，代码更容易出错。
 
 .. contents::
 
@@ -31,13 +31,11 @@ Solution
 
 - 什么是圈复杂度
 
-
-
 - 如何降低圈复杂度
-
 
 
 Reference
 =========
 
-Put here references, and links to other documents.
+- 圈复杂度: https://baike.baidu.com/item/%E5%9C%88%E5%A4%8D%E6%9D%82%E5%BA%A6/828737
+- 减低圈复杂度的方法： https://blog.csdn.net/kaka1121/article/details/52626690
