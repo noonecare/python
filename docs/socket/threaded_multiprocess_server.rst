@@ -54,11 +54,11 @@ WSGI 相关的服务器和框架？
         - werkzueg
         - webob
 
-    写 WSGI Application 的内容，查看 `wsgi`_
+    写 WSGI Application 的内容，查看 `wsgi`_ 。
 
 Reference
 =========
 
 .. _gunicorn: http://gunicorn.org/
 .. _uWSGI: http://uwsgi-docs.readthedocs.io/en/latest/
-.. _wsgi: ./wsgi.rst
+.. _wsgi: ../web_app/wsgi.rst
