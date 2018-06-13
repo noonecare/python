@@ -106,7 +106,7 @@ Python3 中所有类都是新式类，不管怎么定义类。 Python2 中只有
 
 mro(method resolve order)， Python 新式类使用 C3 算法计算 mro。对于多重继承，C3 给出给类的线性排列。C3 算法计算公式为：
 
-.. code-block::
+.. code-block:: python
 
     class MyClass(Base1, Base2):
         pass
@@ -116,7 +116,7 @@ L(MyClass) = MyClass + merge(L[Base1], L[Base2], Base1, Base2)
 
 下面是摘抄的 C3 算法的解释：
 
-    .. code-block::
+    .. code-block:: python
 
         The liberalization of C is the sum of C plus the merge of the liberalizations of the parents and the list of the
         parents.

@@ -65,7 +65,7 @@ Solution
         - ModelSerializer: Provides serialization for model instances
         - HyperlinkedModelSerializer: The same as ModelSerializer, but represents object relationships with links rather than primary keys
 
-    .. code-block::
+    .. code-block:: python
 
         from rest_framework import serializers
         from ..models import Subject
@@ -77,7 +77,7 @@ Solution
 
     对于有外键的 model ， serializer 既可以选择呈现外键的值（integer），也可以选择呈现外键对应的对象。
 
-        .. code-block::
+        .. code-block:: python
 
             class CourseSerializer(serializers.ModelSerializer):
                 # 选择呈现外键的值（integer）
@@ -90,7 +90,7 @@ Solution
 
 
 
-        .. code-block::
+        .. code-block:: python
 
             class CourseSerializer(serializers.ModelSerializer):
                 # 选择呈现外键对应的对象
@@ -115,7 +115,7 @@ Solution
 
 - Generic API View
 
-    .. code-block::
+    .. code-block:: python
 
         from rest_framework import generics
         from ..models import Subject
@@ -149,7 +149,7 @@ Solution
 
         rest-frameworks 提供了 `AllowAny`, `IsAuthenticated`, `IsAuthenticatedOrReadOnly`, `DjangoModelPermissions` 和 `DjangoObjectPermissions` 类实现权限控制。
 
-        .. code-block::
+        .. code-block:: python
 
             from rest_framework.authentication import BasicAuthentication
             from rest_framework.permissions import IsAuthenticated
@@ -165,7 +165,7 @@ Solution
             - has_permission(): View-Level permission check。
             - has_object_permission(): Object-Level permission check。
 
-        .. code-block::
+        .. code-block:: python
 
             from rest_framework.permissions import BasePermission
             class IsEnrolled(BasePermission):
@@ -177,7 +177,7 @@ Solution
 
     Viewset 可以使用 router 绑定 url。在 Viewset 中 view 比较多时，会很有用。
 
-    .. code-block::
+    .. code-block:: python
 
         from django.conf.urls import url, include
         from rest_framework import routers
@@ -187,7 +187,7 @@ Solution
         router = routers.DefaultRouter()
         router.register('courses', views.CourseViewSet)
 
-    .. code-block::
+    .. code-block:: python
 
         class CourseViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = Course.objects.all()

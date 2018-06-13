@@ -2,32 +2,32 @@
 概览
 ===========
 
-:Author: 王蒙
-:Tags: Django，apps
+:作者: 王蒙
+:标签: Django，apps
 
-:abstract:
+:简介:
 
     Django 如此强大，源于Django 有丰富的 apps 可用。很多网站开发中需要的功能，Django 有现成 apps 提供。本节介绍这些 app 的通用特点，方便上手这些插件。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 网站开发
 
-Prerequisites
+预备知识
 =============
 
 Django
 
 
-Problem
+问题
 =======
 
 
 
-Solution
+解决办法
 ========
 
 Django 有丰富的插件，比如 rest_framework, auth_framework, django-brace, django-guardian，django-message 等等。
@@ -43,7 +43,7 @@ Django 有丰富的插件，比如 rest_framework, auth_framework, django-brace,
 
 - 如果是拿来即用，一般 apps 提供了一套 urlpattern 规则，直接使用 include() 函数，给 apps 定义的 urlpattern 添加个前缀就 ok。比如：
 
-    .. code-block::
+    .. code-block:: python
 
         url(r'^admin/', admin.site.urls)
 
@@ -67,7 +67,7 @@ Django 有丰富的插件，比如 rest_framework, auth_framework, django-brace,
 
 
 
-Reference
+参考文献
 =========
 
 Put here references, and links to other documents.

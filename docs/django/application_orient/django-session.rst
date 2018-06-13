@@ -2,10 +2,10 @@
 追踪用户
 ===========
 
-:Author: 王蒙
-:Tags: Django, Web Frameworks, Python, session, cookies
+:作者: 王蒙
+:标签: Django, Web Frameworks, Python, session, cookies
 
-:abstract:
+:简介:
 
     用户在一个网站连续执行的操作称为是一个 session。在一个 session 中，我们希望服务器记录我们在该 session 的行为。比如我们登录了网站之后，去浏览网站时，我们希望网站知道我们已经登录，不希望网站不断重复地要求我们输入账号密码。
 
@@ -13,25 +13,25 @@
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发，网站开发
 
-Prerequisites
+预备知识
 =============
 
 Python, cookies, session
 
 
-Problem
+问题
 =======
 
 
 Django 如何处理 session/cookies ？
 
 
-Solution
+解决办法
 ========
 
 客户端会把用户本次会话的信息保存到 http request 的 cookies 中发送给服务器处理。服务器端缓存接收到用户本次会话信息（在 http request 的 cookies 中）到 session 中，然后把服务器端的 session 保存到 http response 的 set-cookies 中发送回客户端。每次客户端接到服务器端的 http response，也会根据 http response 中的 cookies 更新客户端的 cookies。这样不管是客户端和服务器端都缓存了用户本次会话的信息。
@@ -51,7 +51,7 @@ django 提供了 `django.contrib.sessions.middleware.SessionMiddleware` 来处�
 
 
 
-.. code-block::
+.. code-block:: python
 
     class Cart(object):
 
@@ -109,7 +109,7 @@ django 提供了 `django.contrib.sessions.middleware.SessionMiddleware` 来处�
 
 
 
-Reference
+参考文献
 =========
 
 - Django Cookies Session Settings: https://docs.djangoproject.com/en/1.8/ref/settings/#sessions

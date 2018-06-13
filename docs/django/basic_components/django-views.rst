@@ -2,37 +2,37 @@
 Django View
 =============
 
-:Author: 王蒙
-:Tags: Django, Web Frameworks, Python
+:读者: 王蒙
+:标签: Django, Web Frameworks, Python
 
-:abstract:
+:简介:
 
     view 负责处理解析 http request ，构造 http response。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发，网络开发
 
-Prerequisites
+预备知识
 =============
 
 Python, 简单了解 http 协议
 
-Problem
+问题
 =======
 
 如何定义 view
 
 
-Solution
+解决办法
 ========
 
 - 定义 view 函数。
 
-    .. code-block::
+    .. code-block:: python
 
         from django.http import HttpResponse
 
@@ -49,7 +49,7 @@ Solution
     对于带参数的 view 函数，在 route 配置时，需要配置参数取什么值，比如对于上面的 get_resource view 可以在 urls.py 中定义：
 
 
-    .. code-block::
+    .. code-block:: python
 
         from django.conf.urls import url
         from django.contrib import admin
@@ -67,7 +67,7 @@ Solution
 
 - 定义 view 类，使用类定义 View 最大的好处是可以通过类继承重用代码。`django.views.generic` 有现成的 View 类型，继承这些 View 类型，可以定义 View 类。
 
-    .. code-block::
+    .. code-block:: python
 
         from django.views.generic.base import TemplateResponseMixin, View
 
@@ -87,7 +87,7 @@ Solution
 
 
 
-Reference
+参考文献
 =========
 
 - Django By Example

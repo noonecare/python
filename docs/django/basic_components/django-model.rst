@@ -2,27 +2,27 @@
 Django Model
 =============
 
-:Author: 王蒙
-:Tags: 网络编程，Web Framework
+:读者: 王蒙
+:标签: 网络编程，Web Framework
 
-:abstract:
+:简介:
 
     Model 使得 Django 操作数据库变得非常简单。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发，网站开发
 
-Prerequisites
+预备知识
 =============
 
 Python, ORM
 
 
-Problem
+问题
 =======
 
 - Model 带来了那些好处？
@@ -38,7 +38,7 @@ Problem
         - Proxy
         - Abstract
 
-Solution
+解决办法
 ========
 
 - Model 带来了那些好处？
@@ -56,7 +56,7 @@ Solution
         - Django 定义外键的方式和 SQLAlchemy 不同。我觉得 Django Model 的定义方式更简洁流畅。
         - class Meta: ordering = ('title', '-created') 用于表示查询结果以 title 升序， created 降序排列。
 
-        .. code-block::
+        .. code-block:: python
 
             class Post(models.Model):
                 STATUS_CHOICES = (
@@ -100,7 +100,7 @@ Solution
 
         - 增加记录，就是新建 Model 对象，然后执行 save() 方法保存，比如：
 
-            .. code-block::
+            .. code-block:: python
 
                 # 新建 model 时，注意一点，就是外键取值是个对象，不是键值
                 m = Module(course=course, title='title', description='description')
@@ -111,14 +111,14 @@ Solution
 
         - 删除记录，就是找到 Model 对象，然后执行 delete() 方法删除，比如：
 
-            .. code-block::
+            .. code-block:: python
 
                 # m is an instance of a kind of Model.
                 m.delete()
 
         - 改写，就是直接给 Model 对象的属性值赋值。比如：
 
-            .. code-block::
+            .. code-block:: python
 
                 # m is an instance of a kind of Model.
                 m.title = 'change_title'
@@ -127,7 +127,7 @@ Solution
 
         - 查询，Django Model 查询返回的结果是 **QuerySet** ， QuerySet 是 lazily evaluated 的。Django Model 使用 \_\_ 解析字段取值的方式很特别。
 
-            .. code-block::
+            .. code-block:: python
 
                 # get all modules.
                 all_posts = Post.objects.all()
@@ -159,7 +159,7 @@ Solution
     Django 自身提供了 Admin 管理界面。ModelAdmin 定义了 Model 在 Admin 管理界面如何展示。
 
 
-    .. code-block::
+    .. code-block:: python
 
         class PostAdmin(admin.ModelAdmin):
             list_display = ('title', 'slug', 'author', 'publish', 'status')
@@ -177,7 +177,7 @@ Solution
     Django Model 提供了比数据库要丰富的字段。如果还不够用，可以自定义字段。
 
 
-    .. code-block::
+    .. code-block:: python
 
         class OrderField(models.PositiveIntegerField):
 
@@ -210,7 +210,7 @@ Solution
 
         - Abstract: 被继承的 Model, 不会建立对应的表。继承的 Model 会在被继承 Model 的基础上添加字段。
 
-            .. code-block::
+            .. code-block:: python
 
                 from django.db import models
                     class BaseContent(models.Model):
@@ -225,7 +225,7 @@ Solution
 
         - Multi-table： 被继承的 Model, 也会建立对应的表。继承的 Model 会在被继承 Model 的基础上添加字段。
 
-            .. code-block::
+            .. code-block:: python
 
                 from django.db import models
                 class BaseContent(models.Model):
@@ -237,7 +237,7 @@ Solution
 
         - Proxy：被继承的 Model 会建立对应的表，但是继承的 Model 对应的表就是被继承 Model 的表。继承的 Model 是添加了新的方法（不更改字段），方便使用。
 
-            .. code-block::
+            .. code-block:: python
 
                 from django.db import models
                 from django.utils import timezone
@@ -255,7 +255,7 @@ Solution
                         return timezone.now() - self.created
 
 
-Reference
+参考文献
 =========
 
 - Django by Example.

@@ -2,24 +2,24 @@
 注册认证登出
 ===============
 
-:Author: 王蒙
-:Tags: Django, authenticate, login, logout, oauth2
+:作者: 王蒙
+:标签: Django, authenticate, login, logout, oauth2
 
-:abstract:
+:简介:
 
     介绍 Django 认证，登录，登出的用法。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 网站开发
 
-Prerequisites
+预备知识
 =============
 
-Problem
+问题
 =======
 
 - Django 自带的认证机制
@@ -27,7 +27,7 @@ Problem
 - 自定义认证
 - 自定义权限
 
-Solution
+解决办法
 ========
 
 
@@ -35,7 +35,7 @@ Solution
 
 
 
-Reference
+参考文献
 =========
 
 - 自定义认证： https://docs.djangoproject.com/en/2.0/topics/auth/customizing/

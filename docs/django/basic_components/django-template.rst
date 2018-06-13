@@ -2,27 +2,27 @@
 Django Template
 ===============
 
-:Author: 王蒙
-:Tags: Django, Template, Web Framework, Python
+:作者: 王蒙
+:标签: Django, Template, Web Framework, Python
 
-:abstract:
+:简介:
 
     介绍 Django 的模板。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发，网站开发
 
-Prerequisites
+预备知识
 =============
 
 Python
 
 
-Problem
+问题
 =======
 
 - 模板继承
@@ -31,7 +31,7 @@ Problem
 - context processor
 - Pycharm 对于 Django 模板的支持
 
-Solution
+解决办法
 ========
 
 - 模板继承
@@ -46,7 +46,7 @@ Solution
 
         - simple_tag
 
-            .. code-block::
+            .. code-block:: python
 
                 from django import template
                 register = template.Library()
@@ -58,7 +58,7 @@ Solution
 
         - inclusion_tag
 
-            .. code-block::
+            .. code-block:: python
 
                 @register.inclusion_tag('blog/post/latest_posts.html')
                 def show_latest_posts(count=5):
@@ -69,7 +69,7 @@ Solution
 
         - assignment_tag
 
-            .. code-block::
+            .. code-block:: python
 
                 from django.db.models import Count
                 @register.assignment_tag
@@ -82,7 +82,7 @@ Solution
 
     - 对于特别的功能，可以自定义 filter
 
-        .. code-block::
+        .. code-block:: python
 
             from django.utils.safestring import mark_safe
             import markdown
@@ -93,7 +93,7 @@ Solution
 
 - context processor 从 request 中构造 dict, 这个 dict 可以用在模板中。
 
-    .. code-block::
+    .. code-block:: python
 
         from .cart import Cart
 
@@ -102,7 +102,7 @@ Solution
 
     context processor 要生效，需要写到 settings.py 中。
 
-    .. code-block::
+    .. code-block:: python
 
         TEMPLATES = [
                         {
@@ -128,7 +128,7 @@ Solution
     实际用 Pycharm 写 template 时，会发现 Pycharm 能够自动补全 tag 和 filter。
 
 
-Reference
+参考文献
 =========
 
 - Django By Example

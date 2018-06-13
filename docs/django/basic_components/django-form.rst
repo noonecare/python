@@ -2,40 +2,40 @@
 Django Form
 =============
 
-:Author: 王蒙
-:Tags: Django, Web Frameworks, Python
+:作者: 王蒙
+:标签: Django, Web Frameworks, Python
 
-:abstract:
+:简介:
 
     本节介绍 Django 如何处理 form（表单）。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发，网站开发
 
-Prerequisites
+预备知识
 =============
 
 Django Model, Python
 
-Problem
+问题
 =======
 
 - 什么是表单
 - Django 如何处理表单
 
 
-Solution
+解决办法
 ========
 
 - 什么是表单
 
     表单就是 html5 中的 form 元素。比如：
 
-    .. code-block::
+    .. code-block:: html
 
         <form action="demo_form.asp" method="get" id="user_form">
         First name:<input type="text" name="fname" />
@@ -50,7 +50,7 @@ Solution
 
     - Form
 
-        .. code-block::
+        .. code-block:: python
 
             from django import forms
             # define a form is forms.py.
@@ -89,7 +89,7 @@ Solution
 
         ModelFrom 直接使用关联的 model 中定义的字段作为 form 的输入字段。
 
-        .. code-block::
+        .. code-block:: python
 
             from .models import Comment
             # define modelform.

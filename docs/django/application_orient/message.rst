@@ -2,33 +2,33 @@
 message
 ===========
 
-:Author: 王蒙
-:Tags: Django, Web Frameworks, Python, message, notification
+:作者: 王蒙
+:标签: Django, Web Frameworks, Python, message, notification
 
-:abstract:
+:简介:
 
     Django 中 `django.contrib.messages` 提供了消息通知机制。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发，网络开发
 
-Prerequisites
+预备知识
 =============
 
 Python， Django View
 
 
-Problem
+问题
 =======
 
 使用消息通知用户操作成功了，操作失败了等等。
 
 
-Solution
+解决办法
 ========
 
 `django.contrib.messages` 提供了
@@ -40,7 +40,7 @@ Solution
     - debug(): 调试信息
 
 
-.. code-block::
+.. code-block:: python
 
     from django.contrib import messages
     @login_required
@@ -58,7 +58,7 @@ Solution
             user_form = UserEditForm(instance=request.user)
 
 
-Reference
+参考文献
 =========
 
 - Django By Example

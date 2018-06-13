@@ -2,27 +2,27 @@
 Django
 ===========
 
-:Author: 王蒙
-:Tags: 网络编程
+:作者: 王蒙
+:标签: 网络编程
 
-:abstract:
+:简介:
 
     django 是 python 中最火的插件。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 网络编程，python 编程
 
-Prerequisites
+预备知识
 =============
 
 Python 语法，SQLAlchemy, 简单的JavaScript
 
 
-Problem
+问题
 =======
 
 - django 中重要的组件
@@ -30,7 +30,7 @@ Problem
 - django 中常用的插件
 
 
-Solution
+解决办法
 ========
 
 django 的优势
@@ -63,7 +63,7 @@ MVT(Model, View, Template) 是django 中最重要的组成部分， M 表示后�
 
 使用插件
 
-Reference
+参考文献
 =========
 
 - Django模板中常用的标签(tag): https://blog.csdn.net/you_are_my_dream/article/details/53056141
