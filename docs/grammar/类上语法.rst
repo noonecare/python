@@ -229,4 +229,4 @@ Reference
 - PEP 422: https://www.python.org/dev/peps/pep-0422/
 
 .. _兼容 python2 和 python3 的元类: https://six.readthedocs.io/index.html#six.with_metaclass
-.. _metaclass 原理和例子: metaclass原理和例子.rst
+.. _metaclass 原理和例子: ./元类原理和例子.rst
