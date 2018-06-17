@@ -235,6 +235,7 @@ Python 类创建的过程
         metaclass 构建出的类，每次实例化时，都会先调用 metaclass 的 `__call__` 方法返回该实例，然后调用构建类的 `__init__` 修改该实例。
 
 
+
 Python 2 和 Python3 使用 metaclass 的差异
 
     Python3 中用如下的方式声明 metaclass
@@ -244,6 +245,25 @@ Python 2 和 Python3 使用 metaclass 的差异
             class B(metaclass=RevealingMeta):
                 ...
 
+            class C(B):
+                ...
+
+
+        class B(metaclass=RevealingMeta, a=1, b=2) 等价于:
+
+            namespace = RevealingMeta.__prepare__("B", (), a=1, b=2)
+            # __new__ 很像是 staticmethod，定义元类的 __new__ 方法时，加上 @staticmethod 装饰器也是 ok 的。但是通常不必加 staticmethod。
+            # 下面的代码是我猜测的调用 __new__ 方法的方式。我怎么写，只是为了让我记住 __new__ 接收哪些参数，要返回什么。
+            call_new = getattr(RevealingMeta, '__new__')
+            cls = call_new(RevealingMeta, "B", (), namespace, a=1, b=2)
+            B = B(cls, "B", (), namespace, a=1, b=2)  # B(*args, **kwargs) 相当于是调用 B.__init__(*args, **kwargs)
+
+        class C(B) 和 B 一样使用 RevealingMeta 创建 C 类。与 B 不同的时，这样写的话， bases 不是 (), 而是 (<class '__main__.Klass'>,)。bases 代表了该类的父类（父类的父类，以此类推）。
+
+        name 参数表示类名，会被写入创建出的类（比如例子中的 B 类和 C 类）中的 `__name__` 属性。
+        bases 表示继承关系，会被写入到创建出的类的 `__bases__` 属性 和 `__mro__` 属性。
+
+
     Python 2 中使用如下的方式声明 metaclass
 
         .. code-block:: python
@@ -251,6 +271,10 @@ Python 2 和 Python3 使用 metaclass 的差异
             class B(object):
 
                 __mataclass__ = RevealingMeta
+
+
+
+
 
 
 metaclass 常见的应用
