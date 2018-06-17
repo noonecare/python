@@ -167,120 +167,46 @@ descriptor 协议:
 metaclass
 ~~~~~~~~~~~~~
 
-Python3 中一切数据都是对象。Python3 对象可以分为两类，一类继承自 type, 一类没有继承自 type。继承自 type 的类能做 metaclass, metaclass 用于自定义类（Python3 中类也是对象）的创建。默认的 metaclass 是 type。
 
-Python 类创建的过程
-
-类创建时，先调用该类的 metaclass 的 `__prepare__` 方法，再调用 `__new__` 方法，最后调用 `__init__` 方法。
-
-类实例化时，会先调用其 metaclass 类的 `__call__` 方法，再调用它本身的 `__init__` 方法，返回类的实例。
-
-下面的代码是论证上面观点的例子：
-
-    .. code-block:: python
-
-        class RevealingMeta(type):
-            def __new__(mcs, name, bases, namespace, **kwargs):
-                print(mcs, "__new__ called")
-                return super().__new__(mcs, name, bases, namespace)
-
-            @classmethod
-            def __prepare__(mcs, name, bases, **kwargs):
-                print(mcs, "__prepare__ called")
-                return super().__prepare__(name, bases, **kwargs)
-
-            def __init__(cls, name, bases, namespace, **kwargs):
-                print(cls, "__init__ called")
-                super().__init__(name, bases, namespace)
-
-            def __call__(cls, *args, **kwargs):
-                print(cls, "__call__ called")
-                return super().__call__(*args, **kwargs)
+`metaclass 原理和例子`_
 
 
-        class B(metaclass=RevealingClassCreation):
-             """展示类创建的过程1。"""
+Python3 中用如下的方式使用元类（metaclass）
 
-        class C(metaclass=RevealingClassCreation):
-            """展示类创建的过程2。"""
+.. code-block::  python
 
-        print('+++++++++++++++++++++++++++++++++++++++')
+    class B(metaclass=MetaClass):
+        ...
 
-        B()
-        C()
-
-
-下面具体介绍 type 的 `__new__`, `__prepare`, `__init__` 和 `__call__` 方法都做了什么。
-
-
-    - metaclass 中的 \_\_prepare\_\_(mcs, name, bases, **kwargs) 方法。
-
-        返回 namespace, 该 namespace 是 mapping 类型，会交给下面的 `__new__` 方法的 namespace 形参。namespace 类对象的 `__dict__` 。
-
-        注意 `prepare` 是 `classmethod`。
-
-    - metaclass 中的 `__new__(mcs, name, bases, namespace)` 方法。
-
-        `__new__` 创建名为 name, 父类为 bases 的，以 namespace 作为 `__dict__` 的类。
-
-
-    - metaclass 中的 \_\_init\_\_(cls, name, bases, namespace, **kwargs) 方法。
-
-        可以在 `__new__` 构建的类的基础上，改造类（比如改造类的属性），`__init__` 的返回值为空。
+    class C(B):
+        ...
 
 
 
-    - metaclass 中的 \_\_call\_\_(cls, *args, **kwargs) 方法。
+Python 2 中使用如下的方式使用元类（metaclass）
 
-        metaclass 构建出的类，每次实例化时，都会先调用 metaclass 的 `__call__` 方法返回该实例，然后调用构建类的 `__init__` 修改该实例。
+.. code-block:: python
 
+    class B(object):
 
-
-Python 2 和 Python3 使用 metaclass 的差异
-
-    Python3 中用如下的方式声明 metaclass
-
-        .. code-block::  python
-
-            class B(metaclass=RevealingMeta):
-                ...
-
-            class C(B):
-                ...
-
-
-        class B(metaclass=RevealingMeta, a=1, b=2) 等价于:
-
-            namespace = RevealingMeta.__prepare__("B", (), a=1, b=2)
-            # __new__ 很像是 staticmethod，定义元类的 __new__ 方法时，加上 @staticmethod 装饰器也是 ok 的。但是通常不必加 staticmethod。
-            # 下面的代码是我猜测的调用 __new__ 方法的方式。我怎么写，只是为了让我记住 __new__ 接收哪些参数，要返回什么。
-            call_new = getattr(RevealingMeta, '__new__')
-            cls = call_new(RevealingMeta, "B", (), namespace, a=1, b=2)
-            B = B(cls, "B", (), namespace, a=1, b=2)  # B(*args, **kwargs) 相当于是调用 B.__init__(*args, **kwargs)
-
-        class C(B) 和 B 一样使用 RevealingMeta 创建 C 类。与 B 不同的时，这样写的话， bases 不是 (), 而是 (<class '__main__.Klass'>,)。bases 代表了该类的父类（父类的父类，以此类推）。
-
-        name 参数表示类名，会被写入创建出的类（比如例子中的 B 类和 C 类）中的 `__name__` 属性。
-        bases 表示继承关系，会被写入到创建出的类的 `__bases__` 属性 和 `__mro__` 属性。
-
-
-    Python 2 中使用如下的方式声明 metaclass
-
-        .. code-block:: python
-
-            class B(object):
-
-                __mataclass__ = RevealingMeta
+        __mataclass__ = MetaClass
 
 
 
 
+可以使用 six 写出`兼容 python2 和 python3 的元类`_ 。
 
 
 metaclass 常见的应用
 
 
-    metaclass 用的比较少。见过的也就是 Django ORM 用过。使用 metaclass 请慎重，多想想有没有更简单的方法。
+    元类（metaclass）很少用。使用 metaclass 请慎重，多想想有没有更简单的方法。
+
+    实际使用元类（metaclass）的例子：
+
+        - ORM: https://github.com/django/django/blob/master/django/db/models/base.py
+
+    todo: django 代码比较多，有时间的话，慢慢看。
 
 
 
@@ -301,3 +227,6 @@ Reference
 - Python cookbook chapter 9 meta programming.
 - Expert Python Programming Chapter 3 Syntax Best Practices above the class level.
 - PEP 422: https://www.python.org/dev/peps/pep-0422/
+
+.. _兼容 python2 和 python3 的元类: https://six.readthedocs.io/index.html#six.with_metaclass
+.. _metaclass 原理和例子: metaclass原理和例子.rst
