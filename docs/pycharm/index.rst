@@ -130,12 +130,12 @@ Terminal
 
 Pycharm 几乎提供了开发相关的所有功能。而且 Pycharm 可以配置 Tools -> External Tools ， 让 Pycharm 集成命令行工具。但除了上一节介绍的功能之外，我选择直接使用命令行。
 
-如图配置 terminal 为 bash.exe（安装了 git 就会有 bash.exe, 该 bash.exe 会启动类似 unix 的命令行环境）。这样配置之后，就可以以操作 unix 命令行的方式使用各种工具做开发。比如可以直接使用 git,fabric,pylint,pytest,sphinx，coverage,profile 等等做操作。
+如图配置 terminal 为 bash.exe（安装了 git 就会有 bash.exe, 该 bash.exe 会启动类似 unix 的命令行环境）。这样配置之后，就可以以 unix 命令行的方式使用各种工具（比如 git,fabric,pylint,pytest,sphinx，coverage,profile）做开发。
 
 .. image:: ./terminal.png
 
 
-Pycharm 通过安装 plugins 可以扩展功能。坑爹的是，JetBrains 的 plugins 源有时候访问不了，下不来插件。
+Pycharm 通过安装 plugins （比如 docker, maven, markdown, redis 等等插件）扩展功能。坑爹的是，JetBrains 的 plugins 源有时候访问不了，下不来插件。
 
 
 常用快捷键
@@ -188,12 +188,12 @@ Pycharm 通过安装 plugins 可以扩展功能。坑爹的是，JetBrains 的 p
 
     - 实现算法的时候，手写代码。
     - 代码不依赖第三方包时，手写代码（更能体会编程语言本身的特性）。
-    - 预先写伪代码。简单的代码看不出伪代码的好处，但是如果项目复杂，提前写好伪代码，能避免拆很多坑。
+    - 预先写伪代码。简单的代码看不出伪代码的好处，但是如果项目复杂，提前写好伪代码，能避免很多坑。
     - 最后，手写代码对面试帮助非常大。
 
 单说开发效率，我坚持认为 Pycharm 能大大提高开发效率。
 
-订阅 youtube 上的 JetBrainsTV 号，这个号里有大量的视频的教程。
+订阅 youtube 上的 JetBrainsTV 号，这个号里有大量的视频教程。
 
 看 Pycharm help 文档，文档中详细写了每个功能的用法。
 
