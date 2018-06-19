@@ -120,7 +120,7 @@ SQLAlchemy 提供了 `MetaData`, `engine` 和 `Session` 来创建连接。MetaDa
 
             .. code-block:: python
 
-                session = engine.connect()
+                connector = engine.connect()
 
 
 Transaction
