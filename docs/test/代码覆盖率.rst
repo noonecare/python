@@ -2,32 +2,32 @@
 代码覆盖率
 ===========
 
-:Author: 王蒙
-:Tags: code coverage, CI, code quality
+:作者: 王蒙
+:标签: code coverage, CI, code quality
 
-:abstract:
+:简介:
 
     代码覆盖率低，说明你应该多做些测试。本节介绍 Python 代码覆盖率工具 coverage 。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发
 
-Prerequisites
+预备知识
 =============
 
 pip, python, pytest
 
-Problem
+问题
 =======
 
 怎样统计代码覆盖率？
 
 
-Solution
+解决办法
 ========
 
 怎样统计代码覆盖率？
@@ -64,7 +64,7 @@ html 形式的代码覆盖率报告会显示每一行代码是否被覆盖。是
 
 
 
-Reference
+参考文献
 =========
 
 - coverage: https://coverage.readthedocs.io/en/coverage-4.5.1/#quick-start
