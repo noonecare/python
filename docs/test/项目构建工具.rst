@@ -119,7 +119,7 @@ envlist 指明了要运行的所有环境， deps 指明了环境的具体定义
 
 `Buildout`_ 也是 Python 中很火的项目构建工具，有空可以了解下。
 
-Reference
+参考文献
 =========
 
 - tox: https://tox.readthedocs.io/en/latest/examples.html
