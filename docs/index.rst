@@ -41,6 +41,7 @@ Python 学习资源：
    database/index.rst
    grammar/index.rst
    pycharm/index.rst
+   django/index.rst
 
 
 .. _flask: https://github.com/pallets/flask
