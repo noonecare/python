@@ -7,7 +7,7 @@ postgresql
 
 :简介:
 
-
+    介绍 postgresql, hive 等数据库的基本用法。
 
 .. contents::
 
@@ -19,7 +19,6 @@ postgresql
 预备知识
 =============
 
-Standard SQL
 
 问题
 =======
@@ -27,8 +26,13 @@ Standard SQL
 Postgresql 的特点
 
 
+
+
 解决办法
 ========
+
+
+
 
 - use database
 

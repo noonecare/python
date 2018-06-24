@@ -1,70 +1,141 @@
-语法可能只是入门。 python 还有很多方面要留心。
+# Python
 
+可读性好，开发效率高是 Python 语言突出优点。
+
+### 语法
+    
+    data structure
+        
+        - list
+        - set
+        - dict
+    function
+        
+        - parameter
+    generator and coroutines
+        - 
+    decorator
+        decorator 装饰函数 func ， 指的是在 func 执行的前后，自动地执行其它逻辑的代码。
+        
+            - 如下 python 代码，相当于执行了 f = decorator(f) 语句。
+                ```python
+                # f = decorator(f)
+                @decorator
+                def f(*args, **kwargs):
+                    ...
+                ```
+            - 函数 \_\_doc\_\_, \_\_anotations\_\_ 等等属性，需要保持（否则装饰前函数的 \_\_doc\_\_ 属性和装饰后的函数的 
+            \_\_doc\_\_ 属性不一致）， python functools.wraps 函数能够保持函数的属性。 
+            - 装饰普通函数 versus 装饰方法
+                - method 属于 Function, method 的调用方式和普通函数不同。
+                - 需要判断函数是不是以 method 的调用方式调用的。
+                - 对于 method 可能需要不同的处理逻辑。
+                
+            - 所有 callable 的 ( 定义了 __call__ 方法 ) object 都可以作为 decorator
+        
+    metaclass
+        - 
+    namespace
+        - 
+    descriptor(access interception)
+        - \_\_get\_\_
+        - \_\_set\_\_
+        
+    manager context
+        - 
+    
+    name mangling
+        - 
+    \_\_all\_\_ mechanism
+    
+    reflection
+        - getattr
+        - 
+    
+    multiple inherit
+
+\_\_dict\_\_
+dir
+types    
+
+
+### 代码规范
+    
+    参见 [pep8](https://pep8.org)。
+       
+### 测试
+    
+    python 单元测试常用的框架：
+        - pytest（推荐使用） 
+        - doctest 
+        - nosetest 
+        - unittest 
+    
+    python 支持 BDD 的开发模式，python 中支持 BDD 的框架有：
+        - Behave
+        - lettuce
+    
+    python 的构建工具：
+        - [tox](https://tox.readthedocs.io/en/latest/)
+        - [buildout](http://www.buildout.org/en/latest/)
+    
+    以上框架， Pycharm 都支持(提供了可视化的使用窗口，提供了工具分析展示构建结果)。 
+
+### 性能调优
+    
+    python 中分析程序性能的框架有：
+        - cProfile
+        - yappi
+        - VMprof
+    
+    这三个框架，都会产生 Statistics（统计每部分代码运行耗时） 和 Call Graph （统计函数相互之间的调用关系）。
+    pycharm 支持上述框架（提供了可视化的使用界面），并提供工具分析 Profile 的结果（cProfile， yappi, VMprof 
+    分别产生 .pstat，.yappi， .vmprof 文件）。
+    
+
+### 网络服务
+
+    python 中构建网络服务的框架有:
+        - django
+        - flask
+        - tornado
+        - 其他的我没有用过
+        
+### 数据库
+
+    python 中处理数据库最有名的框架是：
+        - SQLAchemy
+
+### 科学计算数据分析和机器学习
+
+    python 中用于科学计算的工具有：
+        - numpy
+        - matplotlib
+        - pandas
+        - scipy
+        - skilearn
+        - tensorflow
+
+### 构建工具
+
+    python 中用于构建项目的工具有：
+        - tox
+        - buildout
 
 ### 文档
 
-对于所有语言，文档都很重要；对于 python ， 文档尤其重要。很多 python 的类库，没有文档，根本不知道代码该怎么用（可能这就是 python 类库的文档写的很好的原因）。
+    python 常用的文档格式(docstring style)有两种：
+        - restructure text
+        - Epytext
+        
+### 日志
+    python 日志模块：
+        - logging( 非常类似 Java 中的 log4j )
 
-对于我来说，今后写代码时，要谨记：
+### 配置文件
+    常用的日志文件有 ini 格式和 yaml 格式
 
-- 代码的注释文档，不仅仅要简述变量参数的含义，最好举例说明如何使用。
+### 参考文献
 
-- readme.md 应当包含程序的使用方法，记录程序每次重要的更改。
-
-- 要以写绩效考核的认真劲儿写文档。个人工作主要就是通过文档对团队产生影响的（可能还有开会）。能看你源码的人没有几个。
-
-- 写好文档不容易。文档就是伪代码，描绘了任务的逻辑。要合理的拆分问题，计划任务。文档说不清楚，实现起来也不会顺利。
-
-- 态度要端正，我有很多文档中出现错别字，或者语句不通顺的问题。这样的问题，一看就是写文档时，太不走心导致的。
-
-### 长字符串排版
-
-我代码中需要用 sql 语句建表。所以我用了
-
-```python
-create_table_sql = "create external table if not exists {table_name} ( {column_schema} )stored as parquet location \"{location}\""
-```
-
-但是下面的表述明显有更好的可读性。
-
-```python
-create_table_sql = '''create table if not exists {table_name}
-                      ( {column_schema} )
-                      stored as parquet
-                      location "{location}"'''
-```
-
-
-### 功能划分
-
-代码要有层次，要做功能划分。
-举个例子，使用 tornado 写 web 服务的时候，有一部分是真正对于特定应用特有的代码，有些是框架要求所有 web 服务都要写的代码（RequestHandler）。所以可以把真正特定的逻辑写到 utils.py 模块中，把 RequestHandler 写到 views.py 中。
-
-
-### 变量命名
-
-一般命名不合理， Pycharm 会自动提示。但是还是有 Pycharm 没法帮到你的： 比如如果一个变量不允许其他模块调用，那么这个变量应该以以 _ 开头的字符串命名。此外，尽量使用能表示变量真实含义的英文命名。
-
-
-### 测试
-
-对于简单的脚本，可以不做单元测试。不是说就非要把代码覆盖率整到 100%。 对于类库一般是要求尽可能多的测试。
-尽量减小开发测试的周期。最好写完马上就测，如果不能也尽快去测试。
-
-### 部署
-
-把依赖写到 requirements.txt 中。使用 Docker 部署。
-
-
-### 算法分析与设计
-
-为了实现算法我一直坚持用 Java, 因为我认为底层的语言，才能暴露算法所有细节。但是 Java 不是我惯用的语言。特别是，面试的时候一紧张，几乎写不出来。
-
-其实用 python 实现算法，是没有问题的。用任何语言实现算法都是没有问题。只是不同语言中常用的类型属于不同的数据结构。
-
-
-python 中的 list 是 链表， set 和 dict 是 hash table(在 list 中查找一个元素的时间复杂度是 O(n), 在 set 和 dict 中查找一个元素（key）的时间复杂度是 O(1 + \alpha))。python 中的数组可以直接用 numpy 中的 array（跟 C 语言一样）。
-
-
-
-最近喜欢读源码，感觉是个好事儿。
+- [Python Cookbook]()
+- [pep8 code style guide](http://pep8.org)

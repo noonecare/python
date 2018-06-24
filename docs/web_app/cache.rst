@@ -2,26 +2,26 @@
 Cache
 ===========
 
-:Author: 王蒙
-:Tags: 软件开发，网络编程
+:作者: 王蒙
+:标签: 软件开发，网络编程
 
-:abstract:
+:简介:
 
     缓存是广泛使用的提高效率的工具。那么如何设计缓存，如何使用使用缓存呢？这个小节，总结我知道的缓存技术。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 软件开发，网络编程
 
-Prerequisites
+预备知识
 =============
 
 Python, 算法分析与设计
 
-Problem
+问题
 =======
 
 缓存的应用
@@ -31,41 +31,59 @@ Problem
 分布式缓存
 
 
-Solution
+解决办法
 ========
 
 - 缓存的应用
 
-    - Memorization Algorithm（动态规划）算法用内存空间换时间，缓存会反复使用的中间结果提高计算的效率。
+    - Memorization Algorithm（动态规划）算法用内存空间换时间，缓存反复使用的中间结果提高计算的效率。
     - 数据库中，缓存常用的查询结果。提高查询效率。
     - CDN 缓存，把资源缓存到离客户近的位置，提高客户访问资源的效率。
 
+    缓存的关键指标是 **命中率** 。
 
+    Djnago 使用缓存特别简单，参见 `Django’s cache framework`_ 学习如何在 Django 中使用缓存。
 
 - 缓存的工具
 
-    - 可以自己使用内存做缓存。除了自己把数据保存在内存中外。python 的 `functools.lru_cache` 也提供了简便的把数据缓存到内存中的功能。
-    - 缓存服务
+    - 可以使用内存做缓存。python 的 `functools.lru_cache` 提供了简便地把数据缓存到内存中的功能。（重点）
+    - 缓存服务（重点），特别要注意缓存可以设过期时间。
+
         - memcached
         - redis
 
-    - Varnish 缓存服务器
-    - CDN 缓存服务
+    - 知道，却从未用过的缓存工具：
 
+        - Varnish
 
 
 - 分布式缓存
 
-    把数据缓存到多台服务器上，为了均衡负载，希望平均地把缓存任务分配给多台服务器。这时，常常使用 hash 函数，尽可能随机的把资源，均匀地缓存到多台服务器上。
+    分布式缓存最大的问题，就是尽可能地均分缓存任务，避免出现缓存热点（Hot Spot）影响性能。
 
-    同时，当请求缓存的资源时，希望可以直接找到缓存了该资源的服务器。为此一种可行的做法是： 让缓存服务器从 0 到 N-1 编号。对要缓存的资源（比如资源的url）做 hash, 资源的hash值对 N 取模得到几，就分配到几号缓存服务器。当客户请求缓存资源时，服务器能够根据客户发出的请求（比如请求中包含了资源的 url），算出资源缓存在哪台缓存服务器中，然后直接让该缓存服务器提供资源给客户。
+    哈希槽（hash slot）算法：
 
-    接下来还有个问题。就是如果要添加或者减少
+        - 根据缓存 key 的 hash 值，把缓存分配到多台缓存服务器上。
+
+        - 读取缓存时，根据缓存 key 的 hash 值，访问响应的缓存服务器得到缓存的值。
+
+        - 当需要添加或者删除缓存服务器时，需要做大量的数据迁移工作，很费事儿。一致性哈希算法解决了这个问题。
+
+    一致性哈希算法（consistent hashing）：
+
+        添加缓存服务器，只要迁移添加的缓存服务器之后（顺时针旋转的后面）的第一台服务器中的部分缓存到新添加的缓存服务器即可。
+
+        我认为 redis 集群应该已经实现了一致性哈希算法，实际参考 `从一致性哈希算法到缓存集群实现`_ 发现确实如此。这样的话，开发网站时，一般不用自己去实现一致性哈希算法。
 
 
 
 
-Reference
+参考文献
 =========
 
-Put here references, and links to other documents.
+- Varnish: https://github.com/varnishcache/varnish-cache/
+- 从一致性哈希算法到缓存集群实现: https://zhuanlan.zhihu.com/p/34293054
+- python redis:
+- Django By Example Chapter 11 Caching Content.
+
+.. _Django’s cache framework: https://docs.djangoproject.com/en/dev/topics/cache/
