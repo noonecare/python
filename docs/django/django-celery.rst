@@ -3,7 +3,7 @@ Celery
 ===========
 
 :Author: 王蒙
-:Tags: Django, Web Frameworks, Python
+:Tags: Django, Web Frameworks
 
 :abstract:
 
