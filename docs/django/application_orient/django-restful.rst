@@ -2,27 +2,27 @@
 Restful API
 ============
 
-:Author: 王蒙
-:Tags: Django, Web Frameworks, Rest ful, API
+:作者: 王蒙
+:标签: Django, Web Frameworks, Rest ful, API
 
-:abstract:
+:简介:
 
     不用任何插件，django 就可以实现 restful API。但是在 rest-framework 的帮助下，更容易写出标准，规范的 Restful API。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
-Python 开发，网站开发
+Restful API 相关
 
-Prerequisites
+预备知识
 =============
 
 python, Restful API
 
 
-Problem
+问题
 =======
 
 - Restful 常见误区以及 rest-framework 的优势
@@ -32,7 +32,7 @@ Problem
 - authentication and permission
 - viewset and router
 
-Solution
+解决办法
 ========
 
 - Restful 常见误区以及 rest-framework 的优势
@@ -209,7 +209,7 @@ Solution
                 return self.retrieve(request, *args, **kwargs)
 
 
-Reference
+参考文献
 =========
 
 - Django By Example
