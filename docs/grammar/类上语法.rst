@@ -148,8 +148,8 @@ descriptor 是获取和设置属性的中间件。descriptor 又称自定义 pro
 
 descriptor 协议:
 
-    #. `__set__(self, obj, type=None)`
-    #. `__get__(self, obj, value)`
+    #. `__get__(self, obj, type=None)`
+    #. `__set__(self, obj, value)`
     #. `__delete__(self, obj)`
 
 实现了 `__get__()` and `__set__()` 的 descriptor 称为 ***data descriptor** 。如果 descriptor 只实现了 `__get__()`, 这个 descriptor 称为 **non-data descriptor** 。
