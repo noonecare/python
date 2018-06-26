@@ -1,46 +1,73 @@
 ===========
-Recipe Name
+反射
 ===========
 
-:Author: Recipe Author
-:Tags: document tags separated with spaces
+:作者: 王蒙
+:标签: 反射
 
-:abstract:
+:简介:
 
-
-
-        write here a small abstract about your design document.
+    常用的反射相关的函数。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
-Explain here who is the target readership.
+Python 开发
 
-Prerequisites
+预备知识
 =============
 
-Write the list of prerequisites for implementing this recipe.  This
-can be additional documents, software, specific libraries, environment
-settings or just anything that is required beyond the obvious language
-interpreter.
+descriptor，\_\_dict\_\_ 等
 
-
-Problem
+问题
 =======
 
-Explain the problem that this recipe is trying to solve.
 
+`__getattr__`
 
-Solution
+`__getattribute__`
+
+`dir()`
+
+`getattr()`
+
+`hasattr()`
+
+`setattr()`
+
+`isinstance()`
+
+inspect 包
+
+解决办法
 ========
 
-Give solution to problem explained earlier.  This is the core of a
-recipe.
+`__getattribute__` 和 `__getattr__`
+
+    访问对象的属性（`a.x` 或者 `getattr(a, 'x')`）一定会调用 `__getattribute__` 方法。
+
+    `__getattribute__` 默认（如果没有自定义的话）会按照 data-descriptor, dict attribute, non-data-descriptor 的顺序寻找属性值，如果没有找到会调用 `__getattr__` 返回属性值。
+
+    `__getattr__` 默认是抛出 `AttributeError` 异常。不过时不时可以重定义 `__getattr__` 方法（几乎不会自定义 `__getattribute__` 方法）。
 
 
-Reference
+`hasattr`
+
+`getattr`
+
+`setattr`
+
+`isintance`
+
+dir
+
+inspect 包：这是 python 反射用的包，用的不多，就算 github 上有名的类库用的也不多。
+
+
+参考文献
 =========
 
-Put here references, and links to other documents.
+- Difference between __getattr__ vs __getattribute__: https://stackoverflow.com/questions/3278077/difference-between-getattr-vs-getattribute
+- inspect 文档： https://docs.python.org/3/library/inspect.html
