@@ -29,13 +29,18 @@ class MyExecutor(Thread):
 
     # 通过向 queue 中添加任务，使得进程池执行该任务。
     def __call__(self, func, *args, **kwargs):
+        # 每个线程独享一个 task_queue 和 result_queue 确
+        # 保了，当前 return 的值，就是当前 call 的值。否
+        # 则顺序可能会乱掉。
         self._q.put((func, args, kwargs))
         return self._result_q.get()
 
 
 class MyThreadPool(set):
-    def __init__(self, size, q: Queue, result_queue: Queue):
+    def __init__(self, size):
         for _ in range(size):
+            q = Queue()
+            result_queue = Queue()
             t = MyExecutor(q, self, result_queue)
             # 把 executor 设成 daemon。
             t.setDaemon(True)
@@ -48,9 +53,6 @@ class MyThreadPool(set):
 
 
 def test_MyThreadPool():
-    task_queue = Queue()
-    result_queue = Queue()
-
     def add_(a, b):
         return a + b
 
@@ -63,7 +65,7 @@ def test_MyThreadPool():
     def div_(a, b):
         return a / b
 
-    pool = MyThreadPool(2, task_queue, result_queue)
+    pool = MyThreadPool(2)
 
     t = pool.get_thread()
 
