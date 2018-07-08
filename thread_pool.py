@@ -1,17 +1,27 @@
 """
-    自己用 python 实现 thread pool。
+    自定义 thread pool。
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    1. 使用 Queue 在主线程和 Executor 之间传递参数。（自己实现线程间通
+    讯是很难的，而且每种语言几乎都自带了实现线程间通信的 API, 使用现成
+    的 API 是最优的实现。有空读读 Queue 的源码，加深对于线程间通讯的理
+    解。）
+
+    2. 这个实现，没有给出线程调度机制。把多线程拆成 Executor 和 Task
+    两个概念，就是为了方便地使用不同的线程调度机制。所以这个实现，只是
+    个练习。实际编程不要使用这个 `MyThreadPool`。
+
+    3. 这个实现，控制了线程池的大小，复用线程（节约了线程创建的时间），
+    提高了效率。
 """
 
 from threading import Thread
 from queue import Queue
 
 
-# 使用 queue 传递参数（自己实现参数传递太复杂了。
-# todo: 阅读 queue 的源码，了解 queue 的原理。）
-
 class MyExecutor(Thread):
-    def __init__(self, q, pool, result_q):
-        self._q = q
+    def __init__(self, task_q, result_q, pool):
+        self._q = task_q
         self._result_q = result_q
         self._pool = pool
         super().__init__()
@@ -39,9 +49,9 @@ class MyExecutor(Thread):
 class MyThreadPool(set):
     def __init__(self, size):
         for _ in range(size):
-            q = Queue()
-            result_queue = Queue()
-            t = MyExecutor(q, self, result_queue)
+            task_q = Queue()
+            result_q = Queue()
+            t = MyExecutor(task_q, result_q, self)
             # 把 executor 设成 daemon。
             t.setDaemon(True)
             t.start()
@@ -52,7 +62,7 @@ class MyThreadPool(set):
         return self.pop()
 
 
-def test_MyThreadPool():
+def test_case():
     def add_(a, b):
         return a + b
 
