@@ -40,8 +40,6 @@ DevOps
         - `debian系linux，更换apt-get官方源为国内源`_
 
 
-
-
 - 常用命令
 
     yum

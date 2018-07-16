@@ -1,0 +1,49 @@
+================
+自动部署
+================
+
+:作者: 王蒙
+:标签: automate deploy, fabric, config management tool, on-demand remote execution tool
+
+:简介:
+
+    尽量少直接操作服务器（容易把服务器搞得乱七八糟）。尽量使用 on-demand remote execution tool 或者 config management tool 自动把应用部署到远程服务器。
+
+.. contents::
+
+目标读者
+==========
+
+开发，运维
+
+预备知识
+=============
+
+
+问题
+=======
+
+Fabric 如何通过 ssh 认证
+
+Fabric 如何把应用部署到多台机器
+
+Ansible todo
+
+解决办法
+==========
+
+实际整了整 Fabric ，使用官方文档给出的示例，结果一直报错。所以我决定放弃 Fabric。
+
+
+
+
+参考文献
+=========
+
+- 敏捷开发宣言： http://agilemanifesto.org/iso/zhchs/principles.html
+- 人月神话
+- BDD Testing Framework: https://www.jetbrains.com/help/pycharm/bdd-frameworks.html#run-feature-file
+
+.. _工具: https://wiki.python.org/moin/PythonTestingToolsTaxonomy
+.. _behave: https://github.com/behave/behave
+.. _Lettuce: https://github.com/gabrielfalcao/lettuce

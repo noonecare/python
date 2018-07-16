@@ -2,26 +2,26 @@
 部署服务
 ===========
 
-:Author: 王蒙
-:Tags: Python 服务 部署
+:作者: 王蒙
+:标签: Python, Service, On-Demand Remote Execution, Configuration Management Tools, The Twelve-Factor App, setup.py
 
-:abstract:
+:简介:
 
     介绍 python 如何部署 Saas 应用。
 
 .. contents::
 
 
-Audience
+目标读者
 ========
 
 网络服务，API
 
-Problem
+问题
 =======
 
 
-Solution
+解决办法
 ========
 
 The Twelve-Factor App
@@ -36,7 +36,7 @@ The Twelve-Factor App
     #. 构建发布运行：严格分离构建和运行。
     #. 进程： 以一个或者多个无状态进程运行应用。
     #. 端口绑定： 通过端口绑定提供服务。
-    #. 并发： 通过并发模型进行扩展。
+    #. 并发： 通过并发模型（todo: 具体并发模型有哪些，简述这些并发模型）进行扩展。
     #. 易处理：快速启动和优雅终止。
     #. 开发环境和线上环境等价。尽可能的保持开发，预发布，线上环境相同。
     #. 日志。把日志当做事件流。
@@ -111,7 +111,7 @@ Reloading processes gracefully
 #. 当接到 HUP 信号时，应用旧节点优雅退出（不再接受请求，但是会处理已经接受到的请求），新节点应该开始接受新的请求，确保服务没有间断。
 #. Python 中的 `Gunicorn`_ 和 `uWSGI`_ 都支持不间断服务的重载方式。可以参考这两个框架的做法设计自己的应用。
 
-todo: 我挺好奇 Gunicorn 是怎么实现这种优雅退出的方式的。
+todo: 我挺好奇 Gunicorn 是怎么实现这种优雅退出的。
 
 
 监控维护应用
@@ -157,7 +157,7 @@ Python logging 可以使用配置文件，配置应用的日志该怎么收集�
 
 Circus 和 supervisor 等进程管理工具，也提供了收集和记录日志的功能。
 
-Linux 中的 logrotate 提供了收集和记录日志的功能，《expert python programming》 一书推荐使用 logrotate 收集和记录日志。不过认为这可能是因为该书作者用习惯 logrotate 了。
+Linux 中的 logrotate 提供了收集和记录日志的功能，《expert python programming》 一书推荐使用 logrotate 收集和记录日志。不过我认为这可能是因为该书作者用习惯 logrotate 了。
 
 
 Tools for log process

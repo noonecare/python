@@ -2,34 +2,34 @@
 Vagrant
 ===========
 
-:Author: 王蒙
-:Tags: Python 开发，构建开发环境
+:作者: 王蒙
+:标签: Python 开发，构建开发环境
 
-:abstract:
+:简介:
 
     vagrant 能够方便地为开发提供虚拟执行环境。比如你使用 windows 的系统，但是开发必须基于 linux 环境（比如可能是因为某个 python 包只能运行在 linux 环境下）。这时候，可以方便地使用 vagrant 启动一个虚拟机来做开发。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发
 
-Prerequisites
+预备知识
 =============
 
 docker
 
 
-Problem
+问题
 =======
 
 - vagrant 和 docker 相比有哪些优势和劣势
 - vagrant 基本使用方法
 - 配置 VagrantFile 文件
 
-Solution
+解决办法
 ========
 
 
@@ -50,7 +50,6 @@ vagrant 用于提供开发环境，还是比 Docker 要方便一点：
 Vagrant 基本使用方法？
 ------------------------------------------------------------------------
 
-
 - vagrant 最常用的命令
 
     .. code-block:: shell
@@ -67,9 +66,9 @@ Vagrant 基本使用方法？
 
     可以到 `VagrantCloud`_ 搜索你需要的 box。
 
-    理论上 vagrant init {box_name} 就能下载box， 但是实际在中国，下载 box 非常慢。我发现充了会员的迅雷，下载 vagrant box 非常快。你可以用迅雷先把 box 下载当本地。
+    理论上 vagrant init {box_name} 就能下载box， 但是实际在中国，下载 box 非常慢。我发现充了会员的迅雷，下载 vagrant box 非常快。你可以用迅雷先把 box 下载到本地。
 
-    怎样把迅雷下载的 box 文件，添加到本地 box 仓库呢，请看下面的代码。
+    下面的代码把迅雷下载的 box 文件，添加到本地 box 仓库。然后就可以使用 vagrant init, vagrant up 来构建开发环境。
 
     .. code-block:: shell
 
@@ -90,7 +89,6 @@ Vagrant 基本使用方法？
 
 配置 VagrantFile 文件？
 ---------------------------------------------------------------------------------
-
 
 vagrant init 命令生成的 VagrantFile 每行配置之前都有详细的注释，看注释就能明白这行配置是干什么的。
 

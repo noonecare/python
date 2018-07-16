@@ -2,37 +2,37 @@
 打包发布
 ===========
 
-:Author: 王蒙
-:Tags: Python 打包，发布代码
+:作者: 王蒙
+:标签: Python 打包，发布代码
 
-:abstract:
+:简介:
 
     介绍 python 如何打包发布。
 
 .. contents::
 
-Audience
+目标读者
 ========
 
 Python 开发
 
-Prerequisites
+预备知识
 =============
 
 Python 基础语法
 
-Problem
+问题
 =======
 
 
-Solution
+解决办法
 ========
 
 打包
 ------------------
 
 
-`PyPA(Python Package Authorization)`_ 推荐使用 `setuptools` 给 Python 打包，PyPA 还提供了 `Python Packing User Guide 文档`_ 作为 Python 打包的权威指南。
+`PyPA(Python Package Authorization)`_ 推荐使用 `setuptools` 给 Python 打包。PyPA 还提供了 `Python Packing User Guide 文档`_ 作为 Python 打包的权威指南。
 
 PyPA 推荐的包管理工具如下
 
@@ -40,7 +40,7 @@ PyPA 推荐的包管理工具如下
     #. setuptools 打包
     #. wine 上传包
     #. virtualenv or venv 构建项目级别的独立开发环境
-    #. wheel 能打成 wheel 包尽量导成 wheel 包
+    #. wheel 能打成 wheel 包尽量导成 wheel 包，至少打个针对 windows 环境的包（如果包要在 windows 环境上运行）。
     #. pypi（warehouse 有取代 pypi 的可能）
 
 setup.py
