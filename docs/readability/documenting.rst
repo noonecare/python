@@ -2,25 +2,25 @@
 项目文档
 ====================
 
-:Author: 王蒙
-:Tags: 文档，python 开发，编码规范，持续集成
+:作者: 王蒙
+:标签: 文档，python 开发，编码规范，持续集成
 
-:abstract:
+:简介:
 
     没有文档介绍的项目，别人没法使用。所以文档对于项目至关重要。
 
 .. contents::
 
 
-Audience
+目标读者
 ========
 
 Python 开发
 
-Prerequisites
+预备知识
 =============
 
-Problem
+问题
 =======
 
 - 技术文档写作规则
@@ -28,7 +28,7 @@ Problem
 - Python 推荐的文档格式
 - 持续集成和文档托管
 
-Solution
+解决办法
 ========
 
 
@@ -78,6 +78,15 @@ Python 文档推荐使用 reStructuredText 格式写。
     - Sphinx 能根据 Python 源码的 docstring 生成 API 文档。
 
 
+- Sphinx 提供的重要的 directives:
+
+    module
+    mod
+    toxtree
+    index
+
+
+
 文档构建和项目集成
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -85,7 +94,7 @@ Python 文档推荐使用 reStructuredText 格式写。
 这样做之后，文档每次更新都能及时反映给文档的读者。
 开源项目可以免费使用 Travis 提供的持续集成服务。
 
-Reference
+参考文献
 =========
 
 - Sphinx: http://www.sphinx-doc.org/en/master/
