@@ -1,7 +1,3 @@
-
-![GitHub forks](https://img.shields.io/github/forks/badges/shields.svg?style=social&label=Fork)
-
-
 # Python
 
 可读性好，开发效率高是 Python 语言突出优点。
